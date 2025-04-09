@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Josefin Sans', 'Roboto', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            text-align: center;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            font-weight: 400;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 30px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .countdown-item {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 10px;
+            border-radius: 5px;
+            min-width: 70px;
+            flex: 1 0 auto;
+            max-width: 100px;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        .countdown-number {
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            font-weight: 600;
+        }
+
+        .countdown-label {
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
+            opacity: 0.8;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .logo {
+            max-width: min(150px, 30vw);
+            margin-bottom: 30px;
+            height: auto;
+        }
+
+        @media (max-width: 480px) {
+            .countdown {
+                gap: 5px;
+            }
+
+            .countdown-item {
+                min-width: 60px;
+                padding: 10px 5px;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="https://via.placeholder.com/150" alt="Logo" class="logo">
+        <h1>Coming Soon</h1>
+        <p>We're working hard to bring you something amazing. Stay tuned!</p>
+
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+
+        <p>Launching on April 5, 2025</p>
+    </div>
+
+    <script>
+        // Set the date we're counting down to (May 5, 2025)
+        const countDownDate = new Date("May 5, 2025 00:00:00").getTime();
+
+        // Update the countdown every 1 second
+        const countdown = setInterval(function () {
+            // Get today's date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+            // If the countdown is finished, display a message
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+                document.querySelector("h1").innerHTML = "We're Live!";
+                document.querySelector("p:nth-of-type(1)").innerHTML = "Our website is now available. Thank you for your patience!";
+                document.querySelector("p:nth-of-type(2)").style.display = "none";
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
