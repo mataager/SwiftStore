@@ -1421,9 +1421,9 @@
             // Render size chart content
             modalContent.innerHTML = `
       <div class="flex justify-content-space-between width-available modal-header">
-        <div class="flex center flex-end" onclick="closeModal()">
-          <button style="margin: 0px; border-radius: 0px 8px 0px 8px; background: initial !important; color:#333;" 
-                  type="button" class="Add-to-Cart" closeModal() id="closeButton">
+        <div class="flex center flex-end" onclick="closesizechartModal()">
+          <button style="margin: 0px; border-radius: 0px 8px 0px 8px; background: initial !important; color:#ffffff;" 
+                  type="button" class="Add-to-Cart" >
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -1441,12 +1441,12 @@
             // Close handler
             modal.addEventListener("click", function (event) {
                 if (!modalContent.contains(event.target)) {
-                    closeModal();
+                    closesizechartModal();
                 }
             });
         }, minLoadTime);
     }
-    function closeModal() {
+    function closesizechartModal() {
         const modal = document.querySelector(".modal");
         modal.classList.remove("show");
 
