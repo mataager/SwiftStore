@@ -219,8 +219,8 @@ function showUserForm() {
 
     try {
       // Sign in the guest user programmatically
-      const email = "hancockstoreguest@gmail.com";
-      const password = "hancockstoreguest@gmail.com"; // Replace with the actual password
+      const email = "swiftguest@gmail.com";
+      const password = "swiftguest@gmail.com"; // Replace with the actual password
 
       const userCredential = await firebase
         .auth()

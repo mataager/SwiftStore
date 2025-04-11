@@ -270,12 +270,12 @@ function openCartModal(productId) {
         modalContent.innerHTML = `
         <div class="flex justify-content-space-between width-available modal-header">
         <div class="flex center flex-end " onclick="productDetails('${productId}')">
-          <button style="margin: 0px ;border-radius: 8px 0px 8px 0px; background: initial !important;color:#333" type="button" class="Add-to-Cart" id="perv4Button">
+          <button style="margin: 0px ;border-radius: 8px 0px 8px 0px; background: initial" type="button" class="Add-to-Cart" id="perv4Button">
           <i class="bi bi-box-arrow-in-down-right"></i>
           </button>
       </div>
       <div class="flex center flex-end" onclick="closeModal()">
-          <button style="margin: 0px ;border-radius: 0px 8px 0px 8px; background: initial !important;color:#333;" type="button" class="Add-to-Cart" id="perv4Button">
+          <button style="margin: 0px ;border-radius: 0px 8px 0px 8px; background: initial" type="button" class="Add-to-Cart" id="perv4Button">
               <i class="bi bi-x-lg"></i>
           </button>
       </div>
