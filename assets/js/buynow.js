@@ -112,7 +112,7 @@ function showUserForm() {
   priceText.style.margin = "0";
   priceText.style.fontSize = "12px";
   priceText.style.fontWeight = "thin";
-  priceText.style.color = "white";
+  priceText.style.color = "#333";
   productSummary.appendChild(priceText);
 
   // Append the product summary to the form
@@ -219,8 +219,8 @@ function showUserForm() {
 
     try {
       // Sign in the guest user programmatically
-      const email = "swiftguest@gmail.com";
-      const password = "swiftguest@gmail.com"; // Replace with the actual password
+      const email = "hancockstoreguest@gmail.com";
+      const password = "hancockstoreguest@gmail.com"; // Replace with the actual password
 
       const userCredential = await firebase
         .auth()
@@ -305,7 +305,7 @@ function createTextArea(id, placeholder) {
   textarea.style.maxWidth = "375px";
   textarea.style.width = "-webkit-fill-available";
   textarea.style.background = "none";
-  textarea.style.color = "#333";
+  textarea.style.color = "inherit";
   textarea.style.fontFamily = "inherit";
   textarea.style.fontSize = "medium";
   textarea.style.padding = "10px";
