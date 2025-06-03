@@ -1,6 +1,6 @@
 // uploadToCloudinary
 const uploadPreset = "Swiftstore"; // Replace with your unsigned upload preset name
-const cloudName = "dpxnbxxkl"; // Replace with your Cloudinary cloud name
+const cloudName = "dbt2rzj2z"; // Replace with your Cloudinary cloud name
 // async function uploadToCloudinary(file, uploadPreset, cloudName) {
 //   if (!file) {
 //     console.error("No file provided for upload");
