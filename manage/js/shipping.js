@@ -478,7 +478,15 @@ async function updateShippingStatus(
         // location.reload();
         enableInteractions();
       });
-    } else if (status === "delivered") {
+    } 
+    
+    
+    
+    
+    
+    
+    
+    else if (status === "delivered") {
       // Update the status in the store's order database with ID token
       const response = await fetch(
         `${url}/Stores/${uid}/orders/${orderId}.json?auth=${idToken}`,

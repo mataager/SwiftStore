@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en" class="hydrated">
 
 <head>
@@ -178,6 +178,447 @@
             </style>
         </div>
     </main>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./favicon.png" rel="icon" type="image/x-icon">
+    <title id="title"></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&amp;family=Roboto:wght@400;500;700&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/static.js"></script>
+    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./css/alll.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --text: #f5f6fa;
+            --bg: #1e272e;
+            --card-bg: #2d3436;
+            --success: #00b894;
+            --error: #d63031;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(253, 121, 168, 0.15) 0%, transparent 20%);
+            overflow-x: hidden;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent,
+                    rgba(108, 92, 231, 0.1),
+                    transparent);
+            transform: rotate(45deg);
+            z-index: -1;
+            animation: shine 6s infinite linear;
+        } */
+
+        @keyframes shine {
+            0% {
+                transform: rotate(45deg) translate(-30%, -30%);
+            }
+
+            100% {
+                transform: rotate(45deg) translate(30%, 30%);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(235, 232, 255, 0.178));
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            margin-top: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .input-group input:focus+label,
+        .input-group input:valid+label {
+            border-radius: 10px;
+            top: 0;
+            left: 10px;
+            font-size: 0.8rem;
+            background: var(--card-bg);
+            padding: 0 5px;
+            color: var(--primary);
+        }
+
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            z-index: 2;
+        }
+
+        .input-group input:focus~i {
+            color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            /* background: linear-gradient(45deg, var(--primary), var(--accent)); */
+            background: linear-gradient(45deg, #6a64f1, #8a84f8d3);
+            /* Gradient from #6a64f1 to lighter purple */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #6256fb;
+        }
+
+
+
+        /* Particles background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="logo">
+            <img src="./assets/images/iicon.png" alt="MATAGER">
+        </div>
+
+        <form id="LogIn">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit" class="login-btn" id="LogInButton">
+                <span id="sub-txt">Login</span>
+                <div class="spinner" id="sub-spin"></div>
+            </button>
+
+            <div class="footer-links">
+                <a href="#">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Firebase & Other Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Initialize Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#6c5ce7" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#6c5ce7", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 3, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+
+        // Theme Toggle
+
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDss53pHibCpqo87_1bhoUHkf8Idnj-Fig",
+            authDomain: "matager-f1f00.firebaseapp.com",
+            databaseURL: "https://matager-f1f00-default-rtdb.firebaseio.com",
+            projectId: "matager-f1f00",
+            storageBucket: "matager-f1f00.appspot.com",
+            messagingSenderId: "922824110897",
+            appId: "1:922824110897:web:b7978665d22e2d652e7610",
+            measurementId: "G-FWS29Z8GMT"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Login Function
+        const loginUser = async (username, password) => {
+            try {
+                // Show spinner
+                document.getElementById('sub-txt').style.display = 'none';
+                document.getElementById('sub-spin').style.display = 'block';
+                document.getElementById('LogInButton').disabled = true;
+
+                // Sign in
+                const userCredential = await auth.signInWithEmailAndPassword(username, password);
+                const user = userCredential.user;
+
+                // Store user info
+                localStorage.setItem('uid', user.uid);
+                localStorage.setItem('username', username);
+
+                // Get ID token and fetch store info
+                const idToken = await user.getIdToken();
+                const storeResponse = await fetch(`https://matager-f1f00-default-rtdb.firebaseio.com/Stores/${user.uid}/store-info.json?auth=${idToken}`);
+                const storeData = await storeResponse.json();
+
+                if (storeData) {
+                    localStorage.setItem('planType', storeData.plan);
+                    localStorage.setItem('endingDate', storeData['ending-date']);
+                }
+
+                // Success animation
+                document.getElementById('LogInButton').style.background = 'linear-gradient(45deg, var(--success), #55efc4)';
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Redirect
+                window.location.href = './main.html';
+
+            } catch (error) {
+                // Error handling
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: error.message,
+                    background: 'var(--card-bg)',
+                    color: 'var(--text)'
+                });
+
+                // Reset button
+                document.getElementById('sub-txt').style.display = 'block';
+                document.getElementById('sub-spin').style.display = 'none';
+                document.getElementById('LogInButton').disabled = false;
+
+                // Shake animation
+                document.getElementById('LogIn').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('LogIn').classList.remove('shake');
+                }, 500);
+            }
+        };
+
+        // Form Submission
+        document.getElementById('LogIn').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            loginUser(username, password);
+        });
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            .shake {
+                animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            }
+            @keyframes shake {
+                10%, 90% { transform: translateX(-1px); }
+                20%, 80% { transform: translateX(2px); }
+                30%, 50%, 70% { transform: translateX(-4px); }
+                40%, 60% { transform: translateX(4px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 
 </html>

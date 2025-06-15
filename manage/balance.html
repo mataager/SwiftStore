@@ -98,6 +98,14 @@
 
                     </div>
                 </div>
+                <div class="flex flex-wrap center">
+                    <div class="card mb-20 height-max-content padding-15">
+                        <h3>Flagged Orders</h3>
+                        <p id="Flagged">0</p>
+                        <div class="shine"></div>
+
+                    </div>
+                </div>
             </div>
             <script>
                 async function updateDashboard() {
@@ -116,30 +124,32 @@
                         const amountElement = document.getElementById('amount');
                         const matagerCutElement = document.getElementById('matager-cut');
                         const balanceElement = document.getElementById('balance');
+                        const FlaggedElement = document.getElementById('Flagged');
 
                         // Update the elements with the fetched data
                         countElement.textContent = data.count || 0;
 
                         // Parse and round the amount and matager-cut values
-                        const amount = parseFloat(data.Amount) || 0;
-                        const matagerCut = parseFloat(data['matager-cut']) || 0;
+                        flaggedorderscount = data.flagged || 0;
+                        const amount = data.Amount || 0;
+                        const matagerCut = data['matager-cut'] || 0;
 
                         // Round to 2 decimal places
-                        const roundedAmount = amount.toFixed(2);
-                        const roundedMatagerCut = matagerCut.toFixed(2);
-                        const balance = (amount - matagerCut).toFixed(2); // Calculate and round the balance
+                        const roundedAmount = amount;
+                        const roundedMatagerCut = matagerCut;
+                        const balance = (amount - matagerCut); // Calculate and round the balance
 
                         // Update the elements with the rounded values
                         amountElement.textContent = roundedAmount;
                         matagerCutElement.textContent = roundedMatagerCut;
                         balanceElement.textContent = balance;
+                        FlaggedElement.textContent = flaggedorderscount;
                         Subscription.textContent = Subscription_amount;
 
                     } catch (error) {
                         console.error('Error updating dashboard:', error);
                     }
                 }
-
                 // Call the function to update the dashboard when the page loads
                 document.addEventListener('DOMContentLoaded', updateDashboard);
             </script>

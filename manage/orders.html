@@ -56,6 +56,13 @@
                     </label>
                 </div>
             </div>
+            <div class="sound-toggle-container">
+                <label class="sound-switch">
+                    <input type="checkbox" id="soundToggle">
+                    <span class="slider round"></span>
+                    <span class="sound-label"><i class="bi bi-bell"></i></span>
+                </label>
+            </div>
             <div class="flex center flex-wrap" id="orders-info">
                 <div class="flex flex-wrap center">
                     <div class="card mb-20 height-max-content padding-15 ">
@@ -96,12 +103,14 @@
                     </div>
                 </div>
             </div>
-            <div class="flex center align-items mb-20 flex-wrap mt-40">
+            <div class="search-orders-sec" id="searchorderarea">
                 <div class="m-LR-2 flex align-items" style="width:fit-content;margin-right: 5px;">
                     <div class="shadow">
                         <select style="font-size: small !important;font-style: normal;" name="category" id="category"
                             class="formbold-form-input order-select">
                             <option value="OrderID">Order-ID</option>
+                            <option value="OrderNumber">Row Number</option>
+                            <option value="CustomerName">Name</option>
                             <option value="Email">Email</option>
                             <option value="Phone">Phone</option>
                         </select>
@@ -119,15 +128,25 @@
                 </div>
             </div>
             <div id="pending-orders-section" class="mb-20">
-                <div class="flex center mb-20">
+                <!-- <div class="flex center mb-20">
                     Pending orders
+                </div> -->
+                <div class="orders-btns-area">
+                    <button class="choose-order-btn" onclick="showSearchBar()">
+                        <p class="white mr-5i">search order</p>
+                        <i class="bi bi-search"></i>
+                    </button>
+
                 </div>
+
                 <div class="flex flex-wrap center overflow-y">
-                    <section class="overflow border-div-table c8080800a radius-15">
+                    <section class="overflow border-div-table c8080800a radius-15" style="width: fit-content;">
                         <div class="tbl-header">
                             <table cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th class="ordercheck">check</th>
+                                        <th class="orderRowNum">#</th>
                                         <th>Order ID</th>
                                         <th>Customer</th>
                                         <th class="w-300">Email</th>
@@ -137,7 +156,8 @@
                                         <th>Telephone Number</th>
                                         <th>Shipping Fees</th>
                                         <th>Total Price</th>
-                                        <th class="textalign w-500">More</th>
+                                        <th>Cuts</th>
+                                        <th class="textalign w-600">More</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -149,7 +169,7 @@
 
                             <table cellpadding="0" cellspacing="0">
                                 <tbody id="orders-table-body">
-                                    <!-- Data will be inserted here by JavaScript -->
+
                                 </tbody>
                             </table>
                             <script>
@@ -157,19 +177,40 @@
                             </script>
 
                         </div>
+
                     </section>
                 </div>
             </div>
             <div id="completed-orders-section" class=" mb-20 hidden">
-                <div class="flex center mb-20">
+                <!-- <div class="flex center mb-20">
                     Completed orders
+                </div> -->
+                <div class="orders-btns-area" id="completed-orders-btns-area">
+                    <button class="choose-order-btn" onclick="showSearchBar()">
+                        <p class="white mr-5i">search order</p>
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                    <button onclick="showorderscheckboxes()">
+                        <p class="white mr-5i">Choose orders</p>
+                        <i class="bi bi-check2-circle"></i>
+                    </button>
+
+                    <button onclick="Printallcompletedorders()">
+                        <p class="white mr-5i">Print All orders</p>
+                        <i class="bi bi-printer"></i>
+                    </button>
                 </div>
+
+                <div class="flex center mb-20"></div>
                 <div class="flex flex-wrap center overflow-y">
                     <section class="overflow border-div-table c8080800a radius-15">
                         <div class="tbl-header">
                             <table cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th class="ordercheck">check</th>
+                                        <th class="orderRowNum">#</th>
                                         <th>Order ID</th>
                                         <th>Customer</th>
                                         <th class="w-300">Email</th>
@@ -179,7 +220,8 @@
                                         <th>Telephone Number</th>
                                         <th>Shipping Fees</th>
                                         <th>Total Price</th>
-                                        <th class="textalign w-500">More</th>
+                                        <th>Cuts</th>
+                                        <th class="textalign w-600">More</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -199,8 +241,15 @@
                 </div>
             </div>
             <div id="Canceled-orders-section" class="mb-20 hidden">
-                <div class="flex center mb-20">
+                <!-- <div class="flex center mb-20">
                     Canceled orders
+                </div> -->
+                <div class="orders-btns-area">
+                    <button class="choose-order-btn" onclick="showSearchBar()">
+                        <p class="white mr-5i">search order</p>
+                        <i class="bi bi-search"></i>
+                    </button>
+
                 </div>
                 <div class="flex flex-wrap center overflow-y">
                     <section class="overflow border-div-table c8080800a radius-15">
@@ -208,6 +257,8 @@
                             <table cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th class="ordercheck">check</th>
+                                        <th class="orderRowNum">#</th>
                                         <th>Order ID</th>
                                         <th>Customer</th>
                                         <th class="w-300">Email</th>
@@ -217,7 +268,8 @@
                                         <th>Telephone Number</th>
                                         <th>Shipping Fees</th>
                                         <th>Total Price</th>
-                                        <th class="textalign w-500">More</th>
+                                        <th>Cuts</th>
+                                        <th class="textalign w-600">More</th>
                                     </tr>
                                 </thead>
                             </table>

@@ -235,7 +235,7 @@
                                 <input type="text" name="Product-Price" id="productprice" placeholder="EGP"
                                     class="formbold-form-input shadow" />
                             </div>
-                            <div class="formbold-input-group m-LR-2 w-auto">
+                            <div class="formbold-input-group m-LR-2 w-auto hidden">
                                 <label for="priceplusthecut" class="formbold-form-label"> Price+cut</label>
                                 <input type="text" name="priceplusthecut" id="priceplusthecut" placeholder="EGP"
                                     class="formbold-form-input shadow" readonly>
@@ -245,6 +245,7 @@
                                 <input type="text" name="sale-amount" id="sale-amount" placeholder="%"
                                     class="formbold-form-input shadow" />
                             </div>
+
                             <div class="formbold-input-group m-LR-2 w-auto hidden">
                                 <label for="Storeprice" class="formbold-form-label ">Final Price</label>
                                 <input type="text" name="Storeprice" id="Storeprice" placeholder="EGP"
@@ -289,7 +290,6 @@
                                             class="formbold-form-input s530150 font-sm  txt-center">
                                             <option value="men">Men</option>
                                             <option value="women">Women</option>
-                                            <option value="kids">Kids</option>
                                         </select>
                                     </div>
                                 </div>
@@ -310,7 +310,6 @@
                                             class="formbold-form-input s530150 font-sm  txt-center">
                                             <option value="Top">Top</option>
                                             <option value="Bottom">Bottom</option>
-                                            <option value="Mix">Mix</option>
                                             <option value="Footwear">Footwear</option>
                                         </select>
                                     </div>
@@ -362,25 +361,6 @@
                     </button>
                 </div>
             </form>
-            <!-- Preview Modal -->
-            <!-- <div id="previewModal" class="modal">
-                <div class="content-product-modal shadow">
-                    <span class="close">&times;</span>
-                    <h2>Product Preview</h2>
-                    <div class="preview-details">
-                        <p><strong>Title:</strong> <span id="preview-title"></span></p>
-                        <p><strong>Brand:</strong> <span id="preview-brand"></span></p>
-                        <p><strong>Price:</strong> <span id="preview-price"></span> EGP</p>
-                        <p><strong>Sale:</strong> <span id="preview-sale"></span>%</p>
-                        <p><strong>Final Price:</strong> <span id="preview-final"></span> EGP</p>
-                        <p><strong>Category:</strong> <span id="preview-category"></span></p>
-                        <p><strong>Piece:</strong> <span id="preview-piece"></span></p>
-                        <p><strong>Type:</strong> <span id="preview-type"></span></p>
-                        <p><strong>Description:</strong></p>
-                        <p id="preview-description"></p>
-                    </div>
-                </div>
-            </div> -->
             <div id="productModal" class="modal">
                 <div class="content-product-modal ">
                     <span class="close" onclick="closeModal()">&times;</span>
@@ -449,6 +429,7 @@
                     </div>
                 </div>
             </div>
+
             <form id="edit-product-form" class="hidden editProduct">
                 <div class="flex center">
                     <div class="input-wrapper">
@@ -527,8 +508,8 @@
                             <input type="text" name="Product-Price" id="productprice-2" placeholder="EGP"
                                 class="formbold-form-input shadow" />
                         </div>
-                        <div class="formbold-input-group m-LR-2 w-auto">
-                            <label for="priceplusthecut2" class="formbold-form-label"> Price+cut</label>
+                        <div class="formbold-input-group m-LR-2 w-auto hidden">
+                            <label for="priceplusthecut2" class="formbold-form-label "> Price+cut</label>
                             <input type="text" name="priceplusthecut2" id="priceplusthecut2" placeholder="EGP"
                                 class="formbold-form-input shadow" readonly>
                         </div>

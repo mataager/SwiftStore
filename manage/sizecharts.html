@@ -210,10 +210,80 @@
                 });
         }
         // Handle file upload
+        //     sizeChartForm.addEventListener("submit", async (event) => {
+        //         event.preventDefault();
+        //         const file = sizeChartFileInput.files[0];
+        //         const chartName = chartNameInput.value.trim(); // Get chart name from input
+
+        //         if (!file) {
+        //             Swal.fire("Error", "Please select a file to upload", "error");
+        //             return;
+        //         }
+
+        //         if (!chartName) {
+        //             Swal.fire("Error", "Please enter a name for the size chart", "error");
+        //             return;
+        //         }
+
+        //         // Show spinner during upload
+        //         const spinner = document.getElementById("sub-spin");
+        //         const text = document.getElementById("sub-txt");
+        //         spinner.classList.remove("hidden");
+        //         text.style.display = "none";
+
+        //         try {
+        //             // const result = await uploadToCloudinary(file, uploadPreset, cloudName); // Replace with `imgurUpload` if needed
+        //             const result = await uploadToBunny(
+        //                 file,
+        //                 { accessKey, storageZoneName, storetitle, pullZone },
+        //                 {
+        //                     maxWidth: 1200,
+        //                     maxHeight: 800,
+        //                     quality: 0.8,
+        //                     maxSizeKB: 500,
+        //                 }
+        //             );
+
+        //             if (result.success) {
+        //                 // Append the new size chart directly into #sizecharts
+        //                 document.getElementById("sizecharts").innerHTML += `
+        //     <div class="card2 mb-20 padding-15 chart-cards center">
+        //         <button class="show-chart-img-btn op-50" title="Show chart image" onclick="cantdonethis()"><i class="bi bi-eye-fill"></i></button>
+        //         <h3 class="flex align-items gap-30" style="justify-content: center;">
+        //             <span>${chartName}</span>
+        //             <button class="del-chart-btn op-50" title="Delete chart" onclick="cantdonethis()"><i class="bi bi-dash-circle"></i></button>
+        //         </h3>
+        //     </div>
+        // `;
+        //                 Swal.fire({
+        //                     toast: true,
+        //                     position: "top-end",
+        //                     icon: "success",
+        //                     title: "Chart added successfully!",
+        //                     showConfirmButton: false,
+        //                     timer: 3000,
+        //                     timerProgressBar: true,
+        //                 }).then(async () => {
+        //                     const { uid, idToken } = await getUserCredentials();
+        //                     await postSizeChartToFirebase(uid, idToken, result.data.link, chartName);
+        //                 });
+        //             } else {
+        //                 Swal.fire("Error", result.data.error, "error");
+        //             }
+
+        //         } catch (error) {
+        //             console.error("Upload failed:", error);
+        //             Swal.fire("Error", "Failed to upload size chart", "error");
+        //         } finally {
+        //             spinner.classList.add("hidden");
+        //             text.style.display = "block";
+        //             closeModal();
+        //         }
+        //     });
         sizeChartForm.addEventListener("submit", async (event) => {
             event.preventDefault();
             const file = sizeChartFileInput.files[0];
-            const chartName = chartNameInput.value.trim(); // Get chart name from input
+            const chartName = chartNameInput.value.trim();
 
             if (!file) {
                 Swal.fire("Error", "Please select a file to upload", "error");
@@ -232,38 +302,56 @@
             text.style.display = "none";
 
             try {
-                const result = await uploadToCloudinary(file, uploadPreset, cloudName); // Replace with `imgurUpload` if needed
+                const result = await uploadToBunny(
+                    file,
+                    {
+                        accessKey,
+                        storageZoneName,
+                        storetitle,
+                        pullZone
+                    },
+                    {
+                        maxWidth: 1200,
+                        maxHeight: 800,
+                        quality: 0.8,
+                        maxSizeKB: 500,
+                    }
+                );
 
-                if (result.success) {
-                    // Append the new size chart directly into #sizecharts
-                    document.getElementById("sizecharts").innerHTML += `
-        <div class="card2 mb-20 padding-15 chart-cards center">
-            <button class="show-chart-img-btn op-50" title="Show chart image" onclick="cantdonethis()"><i class="bi bi-eye-fill"></i></button>
-            <h3 class="flex align-items gap-30" style="justify-content: center;">
-                <span>${chartName}</span>
-                <button class="del-chart-btn op-50" title="Delete chart" onclick="cantdonethis()"><i class="bi bi-dash-circle"></i></button>
-            </h3>
-        </div>
-    `;
-                    Swal.fire({
-                        toast: true,
-                        position: "top-end",
-                        icon: "success",
-                        title: "Chart added successfully!",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                    }).then(async () => {
-                        const { uid, idToken } = await getUserCredentials();
-                        await postSizeChartToFirebase(uid, idToken, result.data.link, chartName);
-                    });
-                } else {
-                    Swal.fire("Error", result.data.error, "error");
-                }
+                // Bunny.net returns { url } instead of { success, data }
+                const imageUrl = result.url;
+
+                // Append the new size chart
+                document.getElementById("sizecharts").innerHTML += `
+            <div class="card2 mb-20 padding-15 chart-cards center">
+                <button class="show-chart-img-btn op-50" title="Show chart image" onclick="showChartImage('${imageUrl}')">
+                    <i class="bi bi-eye-fill"></i>
+                </button>
+                <h3 class="flex align-items gap-30" style="justify-content: center;">
+                    <span>${chartName}</span>
+                    <button class="del-chart-btn op-50" title="Delete chart" onclick="deleteSizeChart(this, '${imageUrl}')">
+                        <i class="bi bi-dash-circle"></i>
+                    </button>
+                </h3>
+            </div>
+        `;
+
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "Chart added successfully!",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                }).then(async () => {
+                    const { uid, idToken } = await getUserCredentials();
+                    await postSizeChartToFirebase(uid, idToken, imageUrl, chartName);
+                });
 
             } catch (error) {
                 console.error("Upload failed:", error);
-                Swal.fire("Error", "Failed to upload size chart", "error");
+                Swal.fire("Error", "Failed to upload size chart: " + error.message, "error");
             } finally {
                 spinner.classList.add("hidden");
                 text.style.display = "block";

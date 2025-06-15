@@ -13,15 +13,25 @@ async function fetchImageAsBase64(url) {
     return null;
   }
 }
-
 // Function to detect Arabic characters
 function containsArabic(text) {
   const arabicRegex = /[\u0600-\u06FF]/;
   return arabicRegex.test(text);
 }
+async function print(orderId, button, event) {
+  event.stopPropagation();
+  // Store original button content and disable it
+  const originalContent = button.innerHTML;
+  const icon = button.querySelector("i");
 
-// Function to print order details to PDF
-async function print(orderId) {
+  // Show loading state
+  button.innerHTML = `
+    <div class="preloader m-0">
+      <div class="spinner-sm"></div>
+    </div>
+  `;
+  button.disabled = true;
+
   try {
     // Fetch order details
     const response = await fetch(`${url}/Stores/${uid}/orders/${orderId}.json`);
@@ -123,5 +133,9 @@ async function print(orderId) {
     doc.save(`Order_${orderId}.pdf`);
   } catch (error) {
     console.error("Error printing order:", error);
+  } finally {
+    // Restore button state whether successful or not
+    button.innerHTML = originalContent;
+    button.disabled = false;
   }
 }
