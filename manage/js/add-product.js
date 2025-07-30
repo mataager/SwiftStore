@@ -186,29 +186,67 @@ document.getElementById("add-more").addEventListener("click", function () {
   setupFileInputHandlers(count);
 });
 
+// const productPriceInput = document.getElementById("productprice");
+// const saleAmountInput = document.getElementById("sale-amount");
+// const pricePlusCutInput = document.getElementById("priceplusthecut");
+// const finalPriceInput = document.getElementById("finalprice");
+// const storePriceInput = document.getElementById("Storeprice");
+
+// function calculateFinalPrice() {
+//   const productPrice = parseFloat(productPriceInput.value) || 0;
+//   const saleAmount = parseFloat(saleAmountInput.value) || 0;
+
+//   // Step 1: Add Matager's Cut to the Main Price
+//   const matagerCut = productPrice * matager_percentage;
+//   const pricePlusCut = Math.ceil(productPrice + matagerCut); // Round up
+//   pricePlusCutInput.value = pricePlusCut; // Update the input field
+
+//   // Step 2: Apply Sale on the Price + Cut
+//   const discount = pricePlusCut * (saleAmount / 100);
+//   const finalPrice = Math.ceil(pricePlusCut - discount); // Round up
+//   finalPriceInput.value = finalPrice; // Show price after sale
+
+//   // Step 3: Store Price = Final Price (rounded up)
+//   storePriceInput.value = finalPrice;
+// }
+
+// //
+
+// productPriceInput.addEventListener("input", calculateFinalPrice);
+// saleAmountInput.addEventListener("input", calculateFinalPrice);
+
 const productPriceInput = document.getElementById("productprice");
 const saleAmountInput = document.getElementById("sale-amount");
 const pricePlusCutInput = document.getElementById("priceplusthecut");
 const finalPriceInput = document.getElementById("finalprice");
 const storePriceInput = document.getElementById("Storeprice");
+// This will store the current cut value
+let currentCut = 0;
 
 function calculateFinalPrice() {
   const productPrice = parseFloat(productPriceInput.value) || 0;
   const saleAmount = parseFloat(saleAmountInput.value) || 0;
 
-  // Step 1: Add Matager's Cut to the Main Price
+  // Calculate initial cut
   const matagerCut = productPrice * matager_percentage;
-  const pricePlusCut = Math.ceil(productPrice + matagerCut); // Round up
-  pricePlusCutInput.value = pricePlusCut; // Update the input field
+  const pricePlusCut = Math.ceil(productPrice + matagerCut);
+  pricePlusCutInput.value = pricePlusCut;
 
-  // Step 2: Apply Sale on the Price + Cut
+  // Calculate discount and final price
   const discount = pricePlusCut * (saleAmount / 100);
-  const finalPrice = Math.ceil(pricePlusCut - discount); // Round up
-  finalPriceInput.value = finalPrice; // Show price after sale
-
-  // Step 3: Store Price = Final Price (rounded up)
+  const finalPrice = Math.ceil(pricePlusCut - discount);
+  finalPriceInput.value = finalPrice;
   storePriceInput.value = finalPrice;
+
+  // Store the current cut value (adjusted for sale if any)
+  currentCut = Math.ceil(matagerCut - matagerCut * (saleAmount / 100));
+
+  return currentCut;
 }
+
+// Add event listeners
+productPriceInput.addEventListener("input", calculateFinalPrice);
+saleAmountInput.addEventListener("input", calculateFinalPrice);
 
 function toggleImageInputs(count) {
   const imageInputs = document.getElementById(`image-inputs-${count}`);
@@ -240,14 +278,6 @@ function toggleImageInputs(count) {
     });
   }
 }
-
-productPriceInput.addEventListener("input", calculateFinalPrice);
-saleAmountInput.addEventListener("input", calculateFinalPrice);
-
-//
-
-productPriceInput.addEventListener("input", calculateFinalPrice);
-saleAmountInput.addEventListener("input", calculateFinalPrice);
 
 function setupToggleExpand(button) {
   button.addEventListener("click", function () {
@@ -719,66 +749,135 @@ function setupFileInputHandlers(count) {
   );
 }
 
+// async function handleFileSelect(event, dropZone) {
+//   const file = event.target.files[0];
+//   const formData = new FormData();
+//   formData.append("image", file);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // choose by the 2 ways
+//     // const result = await imgurUpload(clientId, formData);
+//     const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+
+//     preloader.remove();
+
+//     const imageUrl = result.data?.link;
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status", "upload-ico");
+
+//     if (result.success) {
+//       const imgElement = document.createElement("img");
+//       imgElement.src = imageUrl;
+//       dropZone.innerHTML = "";
+//       dropZone.appendChild(imgElement);
+
+//       // Extract the dropZone number and use it for setting the corresponding img
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+
+//       // Check if the dropZoneNumber is within the range 1-6
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       if (uploadStatus) {
+//         uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
+//       }
+//     } else {
+//       if (uploadStatus) {
+//         uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//       }
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
+
 async function handleFileSelect(event, dropZone) {
   const file = event.target.files[0];
-  const formData = new FormData();
-  formData.append("image", file);
+  if (!file) return;
 
+  // Create and show preloader
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
+  dropZone.innerHTML = "";
   dropZone.appendChild(preloader);
 
-  // Remove any existing upload status elements
+  // Remove any existing upload status
   const existingUploadStatus =
     dropZone.parentElement.querySelector(".upload-status");
-  if (existingUploadStatus) {
-    existingUploadStatus.remove();
-  }
+  if (existingUploadStatus) existingUploadStatus.remove();
 
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // choose by the 2 ways
-    // const result = await imgurUpload(clientId, formData);
-    const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+    // Upload to Bunny CDN
+    const result = await uploadToBunny(
+      file,
+      { accessKey, storageZoneName, storetitle, pullZone },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
+    // Success handling
     preloader.remove();
 
-    const imageUrl = result.data?.link;
-    const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status", "upload-ico");
+    const imgElement = document.createElement("img");
+    imgElement.src = result.url;
+    dropZone.innerHTML = "";
+    dropZone.appendChild(imgElement);
 
-    if (result.success) {
-      const imgElement = document.createElement("img");
-      imgElement.src = imageUrl;
-      dropZone.innerHTML = "";
-      dropZone.appendChild(imgElement);
-
-      // Extract the dropZone number and use it for setting the corresponding img
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
-
-      // Check if the dropZoneNumber is within the range 1-6
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
-
-      if (uploadStatus) {
-        uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
-      }
-    } else {
-      if (uploadStatus) {
-        uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
-      }
+    // Update hidden input
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      document.getElementById(`img${dropZoneNumber}_${count}`).value =
+        result.url;
     }
 
-    // Append upload status to the parent of the drop zone
+    // Add success status
+    const uploadStatus = document.createElement("div");
+    uploadStatus.classList.add("upload-status", "upload-ico");
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
+    console.error("Upload error:", error);
     preloader.remove();
+
+    // Error handling
+    dropZone.innerHTML = `<div class="drop-zone__prompt">Drop file here or click to upload</div>`;
+
     const uploadStatus = document.createElement("div");
     uploadStatus.classList.add("upload-status");
-    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${error.message}</p>`;
+    uploadStatus.innerHTML = `
+      <p><i class="bi bi-cloud-slash red-check"></i></p>
+      <p class="hidden">${error.message.replace("Upload failed: ", "")}</p>
+    `;
     dropZone.parentElement.appendChild(uploadStatus);
   }
 }
@@ -792,15 +891,91 @@ function handleDragLeave(event, dropZone) {
   dropZone.classList.remove("drag-over");
 }
 
+// async function handleDrop(event, dropZone) {
+//   event.preventDefault();
+//   dropZone.classList.remove("drag-over");
+
+//   const files = event.dataTransfer.files;
+//   if (files.length === 0) return;
+
+//   const formData = new FormData();
+//   formData.append("image", files[0]);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // choose by the 2 ways
+//     // const result = await imgurUpload(clientId, formData);
+//     // const result = await uploadToCloudinary(files[0], uploadPreset, cloudName);
+//     const result = await uploadToBunny(
+//       files[0],
+//       { accessKey, storageZoneName, storetitle, pullZone },
+//       {
+//         maxWidth: 1200,
+//         maxHeight: 800,
+//         quality: 0.8,
+//         maxSizeKB: 500,
+//       }
+//     );
+//     preloader.remove();
+
+//     const imageUrl = result.data?.link;
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status", "upload-ico");
+
+//     if (result.success) {
+//       const imgElement = document.createElement("img");
+//       imgElement.src = imageUrl;
+//       dropZone.innerHTML = "";
+//       dropZone.appendChild(imgElement);
+
+//       // Extract the dropZone number and use it for setting the corresponding img
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+
+//       // Check if the dropZoneNumber is within the range 1-6
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       if (uploadStatus) {
+//         uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
+//       }
+//     } else {
+//       if (uploadStatus) {
+//         uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//       }
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
 async function handleDrop(event, dropZone) {
   event.preventDefault();
   dropZone.classList.remove("drag-over");
 
   const files = event.dataTransfer.files;
   if (files.length === 0) return;
-
-  const formData = new FormData();
-  formData.append("image", files[0]);
 
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
@@ -814,46 +989,51 @@ async function handleDrop(event, dropZone) {
   }
 
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // choose by the 2 ways
-    // const result = await imgurUpload(clientId, formData);
-    const result = await uploadToCloudinary(files[0], uploadPreset, cloudName);
+    const result = await uploadToBunny(
+      files[0], // Using the file directly, not FormData
+      {
+        accessKey,
+        storageZoneName,
+        storetitle,
+        pullZone,
+      },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
     preloader.remove();
 
-    const imageUrl = result.data?.link;
     const uploadStatus = document.createElement("div");
     uploadStatus.classList.add("upload-status", "upload-ico");
 
-    if (result.success) {
-      const imgElement = document.createElement("img");
-      imgElement.src = imageUrl;
-      dropZone.innerHTML = "";
-      dropZone.appendChild(imgElement);
+    // Use result.url instead of result.data.link
+    const imageUrl = result.url;
 
-      // Extract the dropZone number and use it for setting the corresponding img
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+    const imgElement = document.createElement("img");
+    imgElement.src = imageUrl;
+    dropZone.innerHTML = "";
+    dropZone.appendChild(imgElement);
 
-      // Check if the dropZoneNumber is within the range 1-6
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
+    // Extract the dropZone number
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
 
-      if (uploadStatus) {
-        uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
-      }
-    } else {
-      if (uploadStatus) {
-        uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
-      }
+    // Check if the dropZoneNumber is within the range 1-6
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      document.getElementById(`img${dropZoneNumber}_${count}`).value = imageUrl;
     }
 
-    // Append upload status to the parent of the drop zone
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
     preloader.remove();
+    console.error("Upload error:", error);
 
     const uploadStatus = document.createElement("div");
     uploadStatus.classList.add("upload-status");
@@ -974,6 +1154,9 @@ document
 
     event.preventDefault(); // Prevent default form submission behavior
 
+    // Calculate prices and get the current cut value
+    const cut = calculateFinalPrice();
+
     // Check if the user is authenticated
     const user = firebase.auth().currentUser; // Get the current user
     if (!user) {
@@ -990,170 +1173,6 @@ document
       return; // Exit if the user is not authenticated
     }
 
-    // if (user) {
-    //   // Get the ID token of the authenticated user
-    //   user.getIdToken().then((idToken) => {
-    //     // Show the preloader and disable the submit button
-    //     const submitButton = document.getElementById("sub-spin");
-    //     const submitTxt = document.getElementById("sub-txt");
-
-    //     submitTxt.classList.add("hidden");
-    //     submitButton.classList.remove("hidden");
-
-    //     // Collect input values
-    //     const formData = new FormData(this);
-    //     const product = {
-    //       "Brand-Name": formData.get("Brand-Name"),
-    //       "Product-Price": pricePlusCutInput.value, // Get the calculated price,
-    //       "Price-before": productPriceInput.value,
-    //       category: formData.get("category"),
-    //       type: formData.get("Type"),
-    //       piece: formData.get("Piece"),
-    //       "sale-amount": formData.get("sale-amount"),
-    //       "product-description": formData.get("product-description"),
-    //       "posted-at": new Date().toLocaleString(),
-    //       "product-photo": "", // Placeholder, will be set later
-    //       "product-photo2": "", // Placeholder, will be set later
-    //       "product-photo3": "", // Placeholder, will be set later
-    //       "product-photo4": "", // Placeholder, will be set later
-    //       "product-photo5": "", // Placeholder, will be set later
-    //       "product-photo6": "", // Placeholder, will be set later
-    //       "product-title": formData.get("product-title"),
-    //       sizes: {}, // Object to store sizes and colors
-    //       "size-chart-url": selectedSizeChartUrl, // Add the selected size chart URL
-    //     };
-
-    //     // Iterate through each product input set
-    //     document.querySelectorAll(".input-set").forEach((productSet) => {
-    //       const size = productSet.querySelector('input[name="size"]').value;
-    //       const colorname = productSet.querySelector(
-    //         'input[name="color-name"]'
-    //       ).value;
-    //       const colorValue = productSet.querySelector(
-    //         'input[name="color-value"]'
-    //       ).value;
-    //       const quantity = parseInt(
-    //         productSet.querySelector('input[name="quantity"]').value
-    //       ); // Convert to integer
-    //       const imageUrl1 = productSet.querySelector(
-    //         'input[name="product-photo"]'
-    //       ).value;
-    //       const imageUrl2 = productSet.querySelector(
-    //         'input[name="product-photo2"]'
-    //       ).value;
-    //       const imageUrl3 = productSet.querySelector(
-    //         'input[name="product-photo3"]'
-    //       ).value;
-    //       const imageUrl4 = productSet.querySelector(
-    //         'input[name="product-photo4"]'
-    //       ).value;
-    //       const imageUrl5 = productSet.querySelector(
-    //         'input[name="product-photo5"]'
-    //       ).value;
-    //       const imageUrl6 = productSet.querySelector(
-    //         'input[name="product-photo6"]'
-    //       ).value;
-
-    //       // Set product photos if not already set
-    //       if (!product["product-photo"]) product["product-photo"] = imageUrl1;
-    //       if (!product["product-photo2"]) product["product-photo2"] = imageUrl2;
-    //       if (!product["product-photo3"]) product["product-photo3"] = imageUrl3;
-    //       if (!product["product-photo4"]) product["product-photo4"] = imageUrl4;
-    //       if (!product["product-photo5"]) product["product-photo5"] = imageUrl5;
-    //       if (!product["product-photo6"]) product["product-photo6"] = imageUrl6;
-
-    //       // Create the color object
-    //       const colorObject = {
-    //         "color-value": colorValue,
-    //         img1: imageUrl1,
-    //         img2: imageUrl2,
-    //         img3: imageUrl3,
-    //         img4: imageUrl4,
-    //         img5: imageUrl5,
-    //         img6: imageUrl6,
-    //         qty: quantity,
-    //       };
-
-    //       // Check if the size already exists in the product's sizes object
-    //       if (!product.sizes[size]) {
-    //         product.sizes[size] = {};
-    //       }
-
-    //       // Add the color object to the corresponding size
-    //       product.sizes[size][colorname] = colorObject;
-    //     });
-
-    //     // Send the product object to the specified API URL with the ID token in the headers
-    //     fetch(
-    //       `https://matager-f1f00-default-rtdb.firebaseio.com/Stores/${user.uid}/Products.json?auth=${idToken}`,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           Authorization: `Bearer ${idToken}`,
-    //         },
-    //         body: JSON.stringify(product),
-    //       }
-    //     )
-    //       .then((response) => {
-    //         if (!response.ok) {
-    //           throw new Error("Network response was not ok");
-    //         }
-    //         return response.json();
-    //       })
-    //       // .then((data) => {
-    //       //   Swal.fire({
-    //       //     title: "Success!",
-    //       //     text: "Product added successfully.",
-    //       //     icon: "success",
-    //       //     showConfirmButton: false,
-    //       //     customClass: {
-    //       //       container: "swal2-custom",
-    //       //       title: "swal2-custom",
-    //       //     },
-    //       //   });
-    //       .then((data) => {
-    //         Swal.fire({
-    //           title: "Success!",
-    //           text: "Product added successfully.",
-    //           icon: "success",
-    //           toast: true, // Enables top-right position
-    //           position: "top-end",
-    //           showConfirmButton: false,
-    //           timer: 5000, // Auto-dismiss after 5 seconds
-    //           customClass: {
-    //             container: "swal2-custom",
-    //             title: "swal2-custom",
-    //           },
-    //         });
-    //         decreaseStock();
-    //         document.getElementById("add-product-form").reset(); // Reset form
-    //         document.getElementById("input-container").innerHTML = "";
-    //         submitTxt.classList.remove("hidden");
-    //         submitButton.classList.add("hidden");
-
-    //         // Wait for 1.5 seconds before reloading the page
-    //         // setTimeout(() => {
-    //         //   window.location.reload();
-    //         // }, 1500);
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error adding document: ", error);
-    //         Swal.fire({
-    //           title: "Error!",
-    //           text: "An error occurred while adding the product.",
-    //           icon: "error",
-    //           customClass: {
-    //             container: "swal2-custom",
-    //             title: "swal2-custom",
-    //           },
-    //         });
-    //         // Hide spinner
-    //         submitTxt.classList.remove("hidden");
-    //         submitButton.classList.add("hidden");
-    //       });
-    //   });
-    // }
     if (user) {
       // Get the ID token of the authenticated user
       user.getIdToken().then((idToken) => {
@@ -1172,6 +1191,7 @@ document
           "Brand-Name": formData.get("Brand-Name"),
           "Product-Price": pricePlusCutInput.value, // Get the calculated price
           "Price-before": productPriceInput.value,
+          "matager-Cut": cut, // Use the calculated cut value
           category: formData.get("category"),
           type: formData.get("Type"),
           piece: formData.get("Piece"),

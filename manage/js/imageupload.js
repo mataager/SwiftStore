@@ -1,20 +1,15 @@
 // uploadToCloudinary
-const uploadPreset = "Swiftstore"; // Replace with your unsigned upload preset name
-const cloudName = "dbt2rzj2z"; // Replace with your Cloudinary cloud name
+const uploadPreset = "Hancock"; // Replace with your unsigned upload preset name
+const cloudName = "dzxs5xgfy"; // Replace with your Cloudinary cloud name
 // async function uploadToCloudinary(file, uploadPreset, cloudName) {
 //   if (!file) {
 //     console.error("No file provided for upload");
-//     return null;
+//     return { success: false, data: { error: "No file provided for upload" } };
 //   }
 
 //   const formData = new FormData();
 //   formData.append("file", file);
 //   formData.append("upload_preset", uploadPreset);
-
-//   console.log("Uploading to Cloudinary...");
-//   for (let [key, value] of formData.entries()) {
-//     console.log(`${key}: ${value}`);
-//   }
 
 //   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
@@ -26,154 +21,226 @@ const cloudName = "dbt2rzj2z"; // Replace with your Cloudinary cloud name
 
 //     if (!response.ok) {
 //       const errorDetails = await response.json();
-//       console.error("Upload error details:", errorDetails);
-//       throw new Error(
-//         errorDetails.error.message ||
-//           `Upload failed with status ${response.status}`
-//       );
+//       return {
+//         success: false,
+//         data: { error: errorDetails.error?.message || "Upload failed" },
+//       };
 //     }
 
 //     const data = await response.json();
-//     console.log("Upload successful:", data);
-//     return data.secure_url;
+//     return {
+//       success: true,
+//       data: { link: data.secure_url }, // Mimic Imgur's `link` field
+//     };
 //   } catch (error) {
 //     console.error("Error uploading image to Cloudinary:", error);
-//     return null;
+//     return {
+//       success: false,
+//       data: { error: error.message },
+//     };
+//   }
+// }
+//
+// async function imgurUpload(clientId, formData) {
+//   try {
+//     const response = await fetch("https://api.imgur.com/3/image", {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Client-ID ${clientId}`,
+//       },
+//       body: formData,
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to upload image: ${response.statusText}`);
+//     }
+
+//     const result = await response.json();
+//     return result; // Return the result for further handling
+//   } catch (error) {
+//     console.error("Error uploading image to Imgur:", error);
+//     throw error; // Re-throw the error for the caller to handle
 //   }
 // }
 
-//
+// Imgur upload implementation
+async function uploadToImgur(file, { clientId }) {
+  const formData = new FormData();
+  formData.append("image", file);
 
-//imgur upload
+  const response = await fetch("https://api.imgur.com/3/image", {
+    method: "POST",
+    headers: {
+      Authorization: `Client-ID ${clientId}`,
+    },
+    body: formData,
+  });
 
-async function uploadToCloudinary(file, uploadPreset, cloudName) {
-  if (!file) {
-    console.error("No file provided for upload");
-    return { success: false, data: { error: "No file provided for upload" } };
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    throw new Error(errorDetails.error?.message || "Imgur upload failed");
   }
 
+  const result = await response.json();
+  return {
+    service: "imgur",
+    url: result.data.link,
+    data: result.data,
+  };
+}
+// Cloudinary upload implementation
+async function uploadToCloudinary(file, { uploadPreset, cloudName }) {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", uploadPreset);
 
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
-  try {
-    const response = await fetch(url, {
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+    {
       method: "POST",
       body: formData,
-    });
+    }
+  );
 
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      return {
-        success: false,
-        data: { error: errorDetails.error?.message || "Upload failed" },
-      };
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    throw new Error(errorDetails.error?.message || "Cloudinary upload failed");
+  }
+
+  const result = await response.json();
+  return {
+    service: "cloudinary",
+    url: result.secure_url,
+    data: result,
+  };
+}
+
+async function uploadToBunny(
+  file,
+  { accessKey, storageZoneName, storetitle, region = "", pullZone },
+  optimizeOptions = null // Add optional optimization parameters
+) {
+  try {
+    let fileToUpload = file;
+
+    // Optimize image if options are provided and file is an image
+    if (optimizeOptions && file.type.startsWith("image/")) {
+      fileToUpload = await optimizeImage(file, optimizeOptions);
     }
 
-    const data = await response.json();
-    return {
-      success: true,
-      data: { link: data.secure_url }, // Mimic Imgur's `link` field
-    };
-  } catch (error) {
-    console.error("Error uploading image to Cloudinary:", error);
-    return {
-      success: false,
-      data: { error: error.message },
-    };
-  }
-}
-//
-async function imgurUpload(clientId, formData) {
-  try {
-    const response = await fetch("https://api.imgur.com/3/image", {
-      method: "POST",
+    // Generate unique filename
+    const fileExtension = file.name.split(".").pop();
+    const filename = `Matager_img_${storetitle}_${Date.now()}_${Math.random()
+      .toString(36)
+      .substr(2, 9)}.${fileExtension}`;
+
+    const baseHostname = "storage.bunnycdn.com";
+    const hostname = region ? `${region}.${baseHostname}` : baseHostname;
+    const uploadUrl = `https://${hostname}/${storageZoneName}/${filename}`;
+
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
       headers: {
-        Authorization: `Client-ID ${clientId}`,
+        AccessKey: accessKey,
+        "Content-Type": "application/octet-stream",
       },
-      body: formData,
+      body: fileToUpload,
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to upload image: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Upload failed: ${errorText}`);
     }
 
-    const result = await response.json();
-    return result; // Return the result for further handling
+    // Return public URL
+    return {
+      url: `https://${pullZone}/${filename}`,
+    };
   } catch (error) {
-    console.error("Error uploading image to Imgur:", error);
-    throw error; // Re-throw the error for the caller to handle
+    console.error("Upload error:", error);
+    throw error;
   }
 }
+/**
+ * Optimizes an image file before upload
+ * @param {File} file - The image file to optimize
+ * @param {Object} options - Optimization options
+ * @param {number} [options.maxWidth=800] - Maximum width in pixels
+ * @param {number} [options.maxHeight=600] - Maximum height in pixels
+ * @param {number} [options.quality=0.7] - JPEG quality (0.1 to 1.0)
+ * @param {number} [options.maxSizeKB=300] - Target max file size in KB
+ * @returns {Promise<Blob>} - Optimized image as Blob
+ */
+async function optimizeImage(file, options = {}) {
+  console.log("optimizat-work");
+  const {
+    maxWidth = 800,
+    maxHeight = 600,
+    quality = 0.7,
+    maxSizeKB = 200,
+  } = options;
 
-// Uncomment the function you want to use and comment out the other one
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const img = new Image();
+      img.onload = function () {
+        // Calculate new dimensions while maintaining aspect ratio
+        let width = img.width;
+        let height = img.height;
 
-// Cloudinary upload function
-/*
-async function uploadImage(file, uploadPreset, cloudName) {
-  if (!file) {
-    console.error("No file provided for upload");
-    return { success: false, data: { error: "No file provided for upload" } };
-  }
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.floor(width * ratio);
+          height = Math.floor(height * ratio);
+        }
 
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", uploadPreset);
+        // Create canvas for resizing
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
 
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+        // Convert to blob with quality settings
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error("Canvas toBlob failed"));
+              return;
+            }
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      return {
-        success: false,
-        data: { error: errorDetails.error?.message || "Upload failed" },
+            // Check if we need to reduce quality further to meet size target
+            if (blob.size / 1024 > maxSizeKB) {
+              const reducedQuality = Math.max(
+                0.1,
+                quality * (maxSizeKB / (blob.size / 1024))
+              );
+              canvas.toBlob(
+                (reducedBlob) => {
+                  if (!reducedBlob) {
+                    reject(
+                      new Error("Canvas toBlob failed on quality reduction")
+                    );
+                    return;
+                  }
+                  resolve(reducedBlob);
+                },
+                file.type || "image/jpeg",
+                reducedQuality
+              );
+            } else {
+              resolve(blob);
+            }
+          },
+          file.type || "image/jpeg",
+          quality
+        );
       };
-    }
-
-    const data = await response.json();
-    return {
-      success: true,
-      data: { link: data.secure_url }, // Mimic Imgur's `link` field
+      img.onerror = () => reject(new Error("Failed to load image"));
+      img.src = event.target.result;
     };
-  } catch (error) {
-    console.error("Error uploading image to Cloudinary:", error);
-    return {
-      success: false,
-      data: { error: error.message },
-    };
-  }
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
 }
-*/
-
-// Imgur upload function
-/*
-async function uploadImage(clientId, formData) {
-  try {
-    const response = await fetch("https://api.imgur.com/3/image", {
-      method: "POST",
-      headers: {
-        Authorization: `Client-ID ${clientId}`,
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to upload image: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return result; // Return the result for further handling
-  } catch (error) {
-    console.error("Error uploading image to Imgur:", error);
-    throw error; // Re-throw the error for the caller to handle
-  }
-}
-*/

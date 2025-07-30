@@ -1,309 +1,3 @@
-// async function searchProduct() {
-//   const spinner = document.getElementById("sub-spin-edit");
-//   const searchicon = document.getElementById("sub-txt-edit");
-//   const message = document.getElementById("warning");
-//   const editdiv = document.getElementById("edititem-details");
-//   const productId = document.getElementById("product-id-input").value.trim();
-
-//   document
-//     .getElementById("BestsellerSwitcher")
-//     .addEventListener("change", function () {
-//       if (this.checked) {
-//         this.setAttribute("bestseller", "true");
-//       } else {
-//         this.setAttribute("bestseller", "false");
-//       }
-//     });
-
-//   // Show the spinner
-//   spinner.classList.remove("hidden");
-//   searchicon.classList.add("hidden");
-
-//   if (!productId) {
-//     editdiv.classList.add("hidden");
-//     Swal.fire({
-//       icon: "warning",
-//       text: "Please enter a product ID",
-//       showConfirmButton: false,
-//       timer: 1500,
-//     }).then(() => {
-//       // Hide the spinner after showing the warning
-//       spinner.classList.add("hidden");
-//       searchicon.classList.remove("hidden");
-//     });
-//     return;
-//   }
-
-//   try {
-//     const response = await fetch(
-//       `${url}/Stores/${uid}/Products/${productId}.json`
-//     );
-//     const data = await response.json();
-
-//     if (!data) {
-//       editdiv.classList.add("hidden");
-//       Swal.fire({
-//         icon: "info",
-//         text: "Product not found",
-//         showConfirmButton: false,
-//         timer: 1500,
-//       }).then(() => {
-//         // Hide the spinner after showing the info
-//         spinner.classList.add("hidden");
-//         searchicon.classList.remove("hidden");
-//       });
-//       return;
-//     }
-
-//     // Fill the form with the fetched data
-//     document.getElementById("producttitle-2").value =
-//       data["product-title"] || "";
-//     document.getElementById("brandname-2").value = data["Brand-Name"] || "";
-//     document.getElementById("productprice-2").value =
-//       data["Price-before"] || "";
-//     document.getElementById("sale-amount-2").value = data["sale-amount"] || "";
-//     document.getElementById("category-2").value = data["category"] || "";
-//     document.getElementById("Piece-2").value = data["piece"] || "";
-//     document.getElementById("Type-2").value = data["type"] || "";
-//     document.getElementById("productdescription-2").value =
-//       data["product-description"] || "";
-//     document.getElementById("mainimg1").src =
-//       data["product-photo"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-//     document.getElementById("mainimg2").src =
-//       data["product-photo2"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-//     document.getElementById("mainimg3").src =
-//       data["product-photo3"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-//     document.getElementById("mainimg4").src =
-//       data["product-photo4"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-//     document.getElementById("mainimg5").src =
-//       data["product-photo5"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-//     document.getElementById("mainimg6").src =
-//       data["product-photo6"] ||
-//       "https://www.svgrepo.com/show/489809/upload-cloud.svg";
-
-//     // Set Bestseller Switcher
-//     const bestsellerSwitcher = document.getElementById("BestsellerSwitcher");
-//     if (data["bestseller"] === true) {
-//       bestsellerSwitcher.checked = true;
-//       bestsellerSwitcher.setAttribute("bestseller", "true");
-//     } else {
-//       bestsellerSwitcher.checked = false;
-//       bestsellerSwitcher.setAttribute("bestseller", "false");
-//     }
-
-//     const categorySelect = document.getElementById("category-2");
-//     const pieceSelect = document.getElementById("Piece-2");
-//     const typeSelect = document.getElementById("Type-2");
-
-//     categorySelect.value = data["category"] || "";
-
-//     calculateFinalPrice2();
-//     // Update the piece dropdown options and type based on the retrieved category and piece
-//     updatePieceOptions(categorySelect, pieceSelect, typeSelect);
-//     pieceSelect.value = data["piece"] || "";
-//     updateType(categorySelect, pieceSelect, typeSelect);
-
-//     renderaddsizeflowbtn();
-
-//     // Add event listeners for category and piece change in the edit form
-//     categorySelect.addEventListener("change", () =>
-//       updatePieceOptions(categorySelect, pieceSelect, typeSelect)
-//     );
-//     pieceSelect.addEventListener("change", () =>
-//       updateType(categorySelect, pieceSelect, typeSelect)
-//     );
-
-//     const container = document.getElementById("input-container2");
-//     container.innerHTML = ""; // Clear previous entries
-
-//     const sizes = data["sizes"];
-//     let count = 0;
-//     for (const size in sizes) {
-//       for (const color in sizes[size]) {
-//         count++;
-//         const product = sizes[size][color];
-//         const newDiv = document.createElement("div");
-//         newDiv.classList.add(
-//           "flex",
-//           "center",
-//           "input-set",
-//           "mb-3",
-//           "flex-wrap",
-//           "mb-30",
-//           "add-product-cart",
-//           "product-record",
-//           "shadow"
-//         );
-//         newDiv.id = `p${count}`;
-//         newDiv.innerHTML = `
-//           <div class="i-div align-items">
-//             <button type="button" style="border: none; margin-left:5px;margin-bottom: 0px;" class="formbold-form-label point toggle-expand2 cus-btn">
-//               <i class="bi bi-arrows-angle-contract"></i>
-//               <i class="bi bi-arrows-angle-expand none"></i>
-//             </button>
-//             <button type="button" style="border: none; margin-left:auto" class=" point no-bg-i toggle-delete2 ml-auto cus-btn">
-//               <i class="bi bi-x-lg"></i>
-//             </button>
-
-//             <div class="flex center align-items ml-auto">
-//               <h5 class="mr-3 none" id="Quantity2">Qty:</h5>
-//               <h5 class="none" id="QuantityValue2">${product.qty}</h5>
-//             </div>
-//             <div class="flex center align-items ml-auto">
-//               <h5 class="mr-3 none" id="size2">Size:</h5>
-//               <h5 class="none" id="sizevalue2">${size}</h5>
-//             </div>
-
-//             <div class="flex center align-items ml-auto">
-//               <label class="circle mr-3 none" id="Colorcircle2" style="background-color: ${product["color-value"]};"></label>
-//               <h5 class="color-value none" id="colorvalue2">${product["color-value"]}</h5>
-//             </div>
-//           </div>
-//           <div class="product-data" id="product-data2" style="max-height: 1300px; opacity: 1; padding: 10px 0px;">
-//             <div class="flex center mb-3">
-
-// <div class="flex mb-10 minline-140 p5 center align-items gap-10 align-flex-start-SQ">
-
-// <div class="input-group flex column">
-//     <label class="font-sm m510" for="size${count}">Size</label>
-//     <div class="input-with-buttons column">
-//         <input id="size2" type="text" name="size2" class="formbold-form-input m-LR-2 max-150" value="${size}">
-//         <div class="flex gap-20 mt-20 hidden">
-//         <button type="button" class="decrement-btn" onclick="decrement2('size${count}')"><i class="bi bi-dash-circle"></i></button>
-//         <button type="button" class="increment-btn" onclick="increment2('size${count}')"><i class="bi bi-plus-circle"></i></button>
-//         <button type="button" class="duplicatePlus-btn2" onclick="duplicatePlus2('size${count}')">
-//             <i class="bi bi-chevron-double-down"></i>
-//         </button>
-//         <button type="button" class="duplicateInRange2-btn" onclick="duplicateInRange2('size${count}')">
-//             <i class="bi bi-collection"></i>
-//         </button>
-//         </div>
-//     </div>
-// </div>
-
-// <div class="input-group flex column">
-//     <label class="font-sm m510" for="quantity${count}">Quantity</label>
-//     <div class="input-with-buttons">
-//         <input id="quantity2" type="text" name="quantity" class="formbold-form-input m-LR-2 max-200" value="${product.qty}">
-//          <div class="flex column gap-10 hidden">
-//         <button type="button" class="decrement-btn" onclick="decrement('quantity${count}')"><i class="bi bi-dash-circle"></i></button>
-//         <button type="button" class="increment-btn" onclick="increment('quantity${count}')"><i class="bi bi-plus-circle"></i></button>
-//         </div>
-//     </div>
-// </div>
-//       </div>
-//             </div>
-//             <div class="flex center">
-//               <button type="button" class="show-img-url" onclick="toggleImageInputs(${count})">Show Images Urls <i class="bi bi-eye-fill"></i></button>
-//             </div>
-//            <div class="flex flex-wrap mb-3 imgids" id="image-inputs-${count}">
-//               <input type="text" id="img1_p${count}" name="product-photo2" placeholder="pic Url 1" class="formbold-form-input m-LR-2 mb-10" value="${product.img1}">
-//               <input type="text" id="img2_p${count}" name="product-photo2-2" placeholder="pic Url 2" class="formbold-form-input m-LR-2 mb-10" value="${product.img2}">
-//               <input type="text" id="img3_p${count}" name="product-photo2-3" placeholder="pic Url 3" class="formbold-form-input m-LR-2 mb-10" value="${product.img3}">
-//               <input type="text" id="img4_p${count}" name="product-photo2-4" placeholder="pic Url 4" class="formbold-form-input m-LR-2 mb-10" value="${product.img4}">
-//               <input type="text" id="img5_p${count}" name="product-photo2-5" placeholder="pic Url 5" class="formbold-form-input m-LR-2 mb-10" value="${product.img5}">
-//               <input type="text" id="img6_p${count}" name="product-photo2-6" placeholder="pic Url 6" class="formbold-form-input m-LR-2 mb-10" value="${product.img6}">
-//             </div>
-//             <div class="flex center flex-wrap mb-3">
-//               <div class="flex flex-column align-items relative">
-//                 <div class="drop-zone" id="dropZone1_p${count}" ondragover="handleDragOver2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                   <img id="editimg1_p${count}" src="${product.img1}"onclick="triggerFileSelect2(this)">
-//                   <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//                 </div>
-//               </div>
-//               <div class="flex flex-column align-items relative">
-//                 <div class="drop-zone" id="dropZone2_p${count}" ondragover="handleDragOver2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                   <img id="editimg2_p${count}" src="${product.img2}"  onclick="triggerFileSelect2(this)">
-//                   <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//                 </div>
-//               </div>
-
-//             <div class="flex flex-column align-items relative">
-//               <div class="drop-zone" id="dropZone3_p${count}" ondragover="handleDragOve2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                 <img id="editimg3_p${count}" src="${product.img3}"  onclick="triggerFileSelect2(this)">
-//                 <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//               </div>
-//             </div>
-
-//             <div class="flex flex-column align-items relative">
-//               <div class="drop-zone" id="dropZone4_p${count}" ondragover="handleDragOver2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                 <img id="editimg4_p${count}" src="${product.img4}"  onclick="triggerFileSelect2(this)">
-//                 <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//               </div>
-//             </div>
-
-//             <div class="flex flex-column align-items relative">
-//               <div class="drop-zone" id="dropZone5_p${count}" ondragover="handleDragOver2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                 <img id="editimg5_p${count}" src="${product.img5}"  onclick="triggerFileSelect2(this)">
-//                 <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//               </div>
-//             </div>
-
-//             <div class="flex flex-column align-items relative">
-//               <div class="drop-zone" id="dropZone6_p${count}" ondragover="handleDragOver2(event, this)" ondragleave="handleDragLeave2(event, this)" ondrop="handleDrop2(event, this)" onclick="triggerFileSelect2(this)">
-//                 <img id="editimg6_p${count}" src="${product.img6}"  onclick="triggerFileSelect2(this)">
-//                 <input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">
-
-//               </div>
-//             </div>
-
-//             </div>
-
-//             <div class="flex center mb-3 mt-12">
-//         <div class="color-input-wrapper m-LR-2">
-//           <div class="flex center align-items">
-//             <input id="Colorbg${count}" style="width:45px;" type="text" name="color${count}" class="formbold-form-input" value="${color}">
-//             <input id="Color${count}" type="color" name="color-value" class="color-picker" value="${product["color-value"]}">
-//             <input type="file" id="imageInput${count}" accept="image/png, image/jpeg" style="display: none;">
-//           </div>
-//           <div class="flex column align-items">
-//           <div class="change-ctib hidden" id="change-ctib-${count}" title="change color as image"> <i class="bi bi-images"></i></div>
-//           <div class="rtc-ctib" id="ReturnToColor-ctib-${count}" title="save image as color" style="top: 22px;"><i class="bi bi-arrow-left-right"></i></div>
-
-//           </div>
-//         </div>
-
-//         <input id="colorname${count}" type="text" name="color-name" style="width: 150px;" placeholder="Black" class="formbold-form-input m-LR-2" value="${color}">
-//       </div>
-//           </div>
-//         `;
-
-//         fetchProductAndSizeChart();
-//         container.appendChild(newDiv);
-//         setupToggleExpand2(newDiv.querySelector(".toggle-expand2"));
-//         setupDeleteButton2(newDiv.querySelector(".toggle-delete2"));
-//         // setupFileInputHandlers2(count);
-//       }
-//     }
-
-//     editdiv.classList.remove("hidden");
-//     message.classList.add("hidden");
-//     searchicon.classList.remove("hidden");
-//     spinner.classList.add("hidden");
-//   } catch (error) {
-//     console.error(error);
-//     Swal.fire({
-//       icon: "error",
-//       text: "An error occurred while fetching product data",
-//       showConfirmButton: false,
-//       timer: 1500,
-//     }).then(() => {
-//       spinner.classList.add("hidden");
-//       searchicon.classList.remove("hidden");
-//     });
-//   }
-// }
-
 async function searchProduct() {
   const spinner = document.getElementById("sub-spin-edit");
   const searchicon = document.getElementById("sub-txt-edit");
@@ -688,12 +382,16 @@ async function patchProduct() {
     // Get the ID token of the authenticated user
     const idToken = await user.getIdToken();
 
+    const cut = calculateFinalPrice2();
+
     const productData = {
       "product-title": document.getElementById("producttitle-2").value,
       "Brand-Name": document.getElementById("brandname-2").value,
       "Price-before": document.getElementById("productprice-2").value,
       "Product-Price": document.getElementById("priceplusthecut2").value,
-      "sale-amount": document.getElementById("sale-amount-2").value,
+      "matager-Cut": cut, // Add the calculated cut here
+      "sale-amount":
+        parseFloat(document.getElementById("sale-amount-2").value) || 0,
       category: document.getElementById("category-2").value,
       type: document.getElementById("Type-2").value,
       piece: document.getElementById("Piece-2").value,
@@ -712,31 +410,6 @@ async function patchProduct() {
     const inputContainer = document.getElementById("input-container2");
     const products = inputContainer.querySelectorAll(".product-record");
     const sizes = {};
-
-    // products.forEach((product) => {
-    //   const size = product.querySelector('[name^="size"]').value;
-    //   const qty = product.querySelector('[name^="quantity"]').value;
-    //   const img1 = product.querySelector('[name^="product-photo2"]').value;
-    //   const img2 = product.querySelector('[name^="product-photo2-2"]').value;
-    //   const img3 = product.querySelector('[name^="product-photo2-3"]').value;
-    //   const img4 = product.querySelector('[name^="product-photo2-4"]').value;
-    //   const img5 = product.querySelector('[name^="product-photo2-5"]').value;
-    //   const img6 = product.querySelector('[name^="product-photo2-6"]').value;
-    //   const color = product.querySelector('[name^="color-name"]').value;
-    //   const colorValue = product.querySelector('[name^="color-value"]').value;
-
-    //   if (!sizes[size]) sizes[size] = {};
-    //   sizes[size][color] = {
-    //     qty,
-    //     img1,
-    //     img2,
-    //     img3,
-    //     img4,
-    //     img5,
-    //     img6,
-    //     "color-value": colorValue,
-    //   };
-    // });
 
     products.forEach((product) => {
       const getValue = (selector) => {
@@ -802,107 +475,6 @@ async function patchProduct() {
       document.getElementById("input-container2").innerHTML = ""; // Clear dynamic fields
     });
   } catch (error) {
-    // try {
-    //   // Get the ID token of the authenticated user
-    //   const idToken = await user.getIdToken();
-
-    //   const productData = {
-    //     "product-title": document.getElementById("producttitle-2").value,
-    //     "Brand-Name": document.getElementById("brandname-2").value,
-    //     "Price-before": document.getElementById("productprice-2").value,
-    //     "Product-Price": document.getElementById("priceplusthecut2").value,
-    //     "sale-amount": document.getElementById("sale-amount-2").value,
-    //     category: document.getElementById("category-2").value,
-    //     type: document.getElementById("Type-2").value,
-    //     piece: document.getElementById("Piece-2").value,
-    //     "size-chart-url": selectedSizeChartUrl,
-    //     "product-description": document.getElementById("productdescription-2")
-    //       .value,
-    //     bestseller:
-    //       document
-    //         .getElementById("BestsellerSwitcher")
-    //         .getAttribute("bestseller") === "true",
-    //   };
-
-    //   const inputContainer = document.getElementById("input-container2");
-    //   const products = inputContainer.querySelectorAll(".product-record");
-    //   const sizes = {};
-
-    //   products.forEach((product) => {
-    //     // Find all input elements that start with the field name
-    //     const sizeInput = product.querySelector('[name^="size"]');
-    //     const qtyInput = product.querySelector('[name^="quantity"]');
-    //     const colorInput = product.querySelector('[name^="color-name"]');
-    //     const colorValueInput = product.querySelector('[name^="color-value"]');
-
-    //     // Get values if elements exist
-    //     const size = sizeInput ? sizeInput.value : "";
-    //     const qty = qtyInput ? qtyInput.value : "";
-    //     const color = colorInput ? colorInput.value : "";
-    //     const colorValue = colorValueInput ? colorValueInput.value : "";
-
-    //     if (!sizes[size]) sizes[size] = {};
-
-    //     // Create color entry with required fields
-    //     const colorEntry = {
-    //       qty,
-    //       "color-value": colorValue,
-    //     };
-
-    //     // Only add image fields if they have values
-    //     const imgFields = [
-    //       { prefix: "product-photo", key: "img1" },
-    //       { prefix: "product-photo-1", key: "img2" },
-    //       { prefix: "product-photo-2", key: "img3" },
-    //       { prefix: "product-photo-3", key: "img4" },
-    //       { prefix: "product-photo-4", key: "img5" },
-    //       { prefix: "product-photo-5", key: "img6" },
-    //     ];
-
-    //     imgFields.forEach(({ prefix, key }, index) => {
-    //       // Handle both formats: "product-photo2" and "product-photo-2"
-    //       const selector = `[name^="${prefix}"]`;
-    //       const imgInput = product.querySelector(selector);
-    //       if (imgInput && imgInput.value) {
-    //         colorEntry[key] = imgInput.value;
-    //       }
-    //     });
-
-    //     sizes[size][color] = colorEntry;
-    //   });
-
-    //   productData["sizes"] = sizes;
-
-    //   // Perform the PATCH request with the ID token
-    //   const response = await fetch(
-    //     `${url}/Stores/${uid}/Products/${productId}.json?auth=${idToken}`,
-    //     {
-    //       method: "PATCH",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${idToken}`,
-    //       },
-    //       body: JSON.stringify(productData),
-    //     }
-    //   );
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to update product");
-    //   }
-
-    //   Swal.fire({
-    //     icon: "success",
-    //     title: "Updated",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   }).then(() => {
-    //     // Hide the edit div and reset its content
-    //     const editdiv = document.getElementById("edititem-details");
-    //     editdiv.classList.add("hidden");
-    //     document.getElementById("edit-product-form").reset();
-    //     document.getElementById("input-container2").innerHTML = ""; // Clear dynamic fields
-    //   });
-    // }
     Swal.fire({
       icon: "error",
       title: "Failed",
@@ -921,10 +493,80 @@ function triggerFileSelect2(dropZone) {
   }
 }
 
+// async function handleFileSelect2(event, dropZone) {
+//   const file = event.target.files[0];
+//   const formData = new FormData();
+//   formData.append("image", file);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+//   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // Upload the image using Cloudinary
+//     // const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+//     const result = await uploadToBunny(
+//       file,
+//       { accessKey, storageZoneName, storetitle, pullZone },
+//       {
+//         maxWidth: 1200,
+//         maxHeight: 800,
+//         quality: 0.8,
+//         maxSizeKB: 500,
+//       }
+//     );
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status", "upload-ico");
+
+//     if (result.success) {
+//       const imageUrl = result.data?.link; // Retrieve the image URL
+//       dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         // Update the corresponding hidden input field
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
+//     } else {
+//       uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
+
 async function handleFileSelect2(event, dropZone) {
   const file = event.target.files[0];
-  const formData = new FormData();
-  formData.append("image", file);
+  if (!file) return;
+
+  // Validate it's an image file
+  if (!file.type.startsWith("image/")) {
+    showErrorStatus(dropZone, "Please upload an image file");
+    return;
+  }
 
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
@@ -933,46 +575,57 @@ async function handleFileSelect2(event, dropZone) {
   // Remove any existing upload status elements
   const existingUploadStatus =
     dropZone.parentElement.querySelector(".upload-status");
-  if (existingUploadStatus) {
-    existingUploadStatus.remove();
-  }
+  if (existingUploadStatus) existingUploadStatus.remove();
+
   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // Upload the image using Cloudinary
-    const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+    const result = await uploadToBunny(
+      file, // Using the file directly
+      {
+        accessKey,
+        storageZoneName,
+        storetitle,
+        pullZone,
+      },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
     preloader.remove();
 
+    // Create upload status element
     const uploadStatus = document.createElement("div");
     uploadStatus.classList.add("upload-status", "upload-ico");
 
-    if (result.success) {
-      const imageUrl = result.data?.link; // Retrieve the image URL
-      dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+    // Bunny.net returns { url } not { success, data }
+    const imageUrl = result.url;
 
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        // Update the corresponding hidden input field
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
+    // Update the dropzone content
+    dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
 
-      uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
-    } else {
-      uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+    // Update the corresponding hidden input field
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      const inputField = document.getElementById(
+        `img${dropZoneNumber}_${count}`
+      );
+      if (inputField) inputField.value = imageUrl;
     }
 
-    // Append upload status to the parent of the drop zone
+    // Show success status
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
     preloader.remove();
-
-    const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
-    uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
-    dropZone.parentElement.appendChild(uploadStatus);
+    console.error("Upload error:", error);
+    showErrorStatus(dropZone, error.message);
   }
 }
 
@@ -985,6 +638,78 @@ function handleDragLeave2(event, dropZone) {
   dropZone.classList.remove("drag-over");
 }
 
+// async function handleDrop2(event, dropZone) {
+//   event.preventDefault();
+//   dropZone.classList.remove("drag-over");
+
+//   const files = event.dataTransfer.files;
+//   if (files.length === 0) return;
+
+//   const formData = new FormData();
+//   formData.append("image", files[0]);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+
+//   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
+
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // Upload the image using Cloudinary
+//     // const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+//     const result = await uploadToBunny(
+//       files[0],
+//       { accessKey, storageZoneName, storetitle, pullZone },
+//       {
+//         maxWidth: 1200,
+//         maxHeight: 800,
+//         quality: 0.8,
+//         maxSizeKB: 500,
+//       }
+//     );
+
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+
+//     if (result.success) {
+//       const imageUrl = result.data?.link; // Retrieve the image URL
+//       dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         // Update the corresponding hidden input field
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       uploadStatus.innerHTML = `<p><i class="bi bi-check-circle-fill blue-check"></i></p>`;
+//     } else {
+//       uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
 async function handleDrop2(event, dropZone) {
   event.preventDefault();
   dropZone.classList.remove("drag-over");
@@ -992,8 +717,11 @@ async function handleDrop2(event, dropZone) {
   const files = event.dataTransfer.files;
   if (files.length === 0) return;
 
-  const formData = new FormData();
-  formData.append("image", files[0]);
+  // Validate it's an image file
+  if (!files[0].type.startsWith("image/")) {
+    showErrorStatus(dropZone, "Please upload an image file");
+    return;
+  }
 
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
@@ -1002,48 +730,56 @@ async function handleDrop2(event, dropZone) {
   // Remove any existing upload status elements
   const existingUploadStatus =
     dropZone.parentElement.querySelector(".upload-status");
-  if (existingUploadStatus) {
-    existingUploadStatus.remove();
-  }
+  if (existingUploadStatus) existingUploadStatus.remove();
 
   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
-
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // Upload the image using Cloudinary
-    const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+    const result = await uploadToBunny(
+      files[0], // Using the file directly
+      {
+        accessKey,
+        storageZoneName,
+        storetitle,
+        pullZone,
+      },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
     preloader.remove();
 
     const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
+    uploadStatus.classList.add("upload-status", "upload-ico");
 
-    if (result.success) {
-      const imageUrl = result.data?.link; // Retrieve the image URL
-      dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+    // Bunny.net returns { url } not { success, data }
+    const imageUrl = result.url;
 
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        // Update the corresponding hidden input field
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
+    // Update the dropzone content
+    dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
 
-      uploadStatus.innerHTML = `<p><i class="bi bi-check-circle-fill blue-check"></i></p>`;
-    } else {
-      uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+    // Update the corresponding hidden input field
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      const inputField = document.getElementById(
+        `img${dropZoneNumber}_${count}`
+      );
+      if (inputField) inputField.value = imageUrl;
     }
 
-    // Append upload status to the parent of the drop zone
+    // Show success status
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
     preloader.remove();
-
-    const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
-    uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
-    dropZone.parentElement.appendChild(uploadStatus);
+    console.error("Upload error:", error);
+    showErrorStatus(dropZone, error.message);
   }
 }
 
@@ -1240,39 +976,75 @@ const saleAmountInput2 = document.getElementById("sale-amount-2");
 const finalPriceInput2 = document.getElementById("finalprice-2");
 const pricePlusCutInput2 = document.getElementById("priceplusthecut2");
 
+// function calculateFinalPrice2() {
+//   const productPrice2 = parseFloat(productPriceInput2.value) || 0;
+//   const saleAmount2 = parseFloat(saleAmountInput2.value) || 0;
+
+//   // Calculate price with tax (price + matager cut)
+//   const priceWithTax = productPrice2 + productPrice2 * matager_percentage;
+
+//   // Display price with tax (before discount) in the hidden field
+//   // Round up and remove .00 if whole number
+//   const priceWithTaxRounded = Math.ceil(priceWithTax);
+//   if (priceWithTaxRounded % 1 === 0) {
+//     pricePlusCutInput2.value = priceWithTaxRounded.toString();
+//   } else {
+//     pricePlusCutInput2.value = priceWithTaxRounded.toFixed(2);
+//   }
+
+//   // Apply sale discount if any
+//   const discount = priceWithTax * (saleAmount2 / 100);
+//   let finalPrice2 = priceWithTax - discount;
+
+//   // Round up to the nearest integer
+//   finalPrice2 = Math.ceil(finalPrice2);
+
+//   // Display final price (after discount)
+//   if (finalPrice2 % 1 === 0) {
+//     finalPriceInput2.value = finalPrice2.toString();
+//   } else {
+//     finalPriceInput2.value = finalPrice2.toFixed(2);
+//   }
+// }
+
 function calculateFinalPrice2() {
   const productPrice2 = parseFloat(productPriceInput2.value) || 0;
   const saleAmount2 = parseFloat(saleAmountInput2.value) || 0;
 
-  // Calculate price with tax (price + matager cut)
-  const priceWithTax = productPrice2 + productPrice2 * matager_percentage;
+  // Calculate Matager's Cut (1.5% of product price)
+  const matagerCut = productPrice2 * 0.015;
 
-  // Display price with tax (before discount) in the hidden field
-  // Round up and remove .00 if whole number
+  // Calculate price with tax (price + matager cut)
+  const priceWithTax = productPrice2 + matagerCut;
+
+  // Display price with tax (before discount)
   const priceWithTaxRounded = Math.ceil(priceWithTax);
-  if (priceWithTaxRounded % 1 === 0) {
-    pricePlusCutInput2.value = priceWithTaxRounded.toString();
-  } else {
-    pricePlusCutInput2.value = priceWithTaxRounded.toFixed(2);
-  }
+  pricePlusCutInput2.value =
+    priceWithTaxRounded % 1 === 0
+      ? priceWithTaxRounded.toString()
+      : priceWithTaxRounded.toFixed(2);
+
+  // Calculate sale-adjusted cut
+  const cut =
+    saleAmount2 > 0
+      ? Math.ceil(matagerCut - matagerCut * (saleAmount2 / 100))
+      : Math.ceil(matagerCut);
 
   // Apply sale discount if any
   const discount = priceWithTax * (saleAmount2 / 100);
   let finalPrice2 = priceWithTax - discount;
 
-  // Round up to the nearest integer
+  // Round up final price
   finalPrice2 = Math.ceil(finalPrice2);
+  finalPriceInput2.value =
+    finalPrice2 % 1 === 0 ? finalPrice2.toString() : finalPrice2.toFixed(2);
 
-  // Display final price (after discount)
-  if (finalPrice2 % 1 === 0) {
-    finalPriceInput2.value = finalPrice2.toString();
-  } else {
-    finalPriceInput2.value = finalPrice2.toFixed(2);
-  }
+  return cut; // Return the calculated cut
 }
 
 productPriceInput2.addEventListener("input", calculateFinalPrice2);
 saleAmountInput2.addEventListener("input", calculateFinalPrice2);
+
 function setupToggleExpand2(button) {
   button.addEventListener("click", function () {
     const expandIcon = button.querySelector(".bi-arrows-angle-expand");
@@ -1344,30 +1116,6 @@ function setupToggleExpand2(button) {
     }
   });
 }
-
-// function setupDeleteButton2(button) {
-//   button.addEventListener("click", function () {
-//     const container = document.getElementById("input-container2");
-
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "Do you want to delete this item?",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonText: "Yes, delete it!",
-//       cancelButtonText: "No, keep it",
-//       customClass: {
-//         confirmButton: "btn btn-danger",
-//         cancelButton: "btn btn-secondary",
-//       },
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         button.closest(".product-record").remove();
-//         updateElementIds2(container);
-//       }
-//     });
-//   });
-// }
 
 function setupDeleteButton2(button) {
   button.addEventListener("click", function () {
@@ -1448,10 +1196,21 @@ async function handleFileChange(event, imgId) {
   if (file) {
     try {
       // Upload the image to Cloudinary
-      const uploadResponse = await uploadToCloudinary(
+      // const uploadResponse = await uploadToCloudinary(
+      //   file,
+      //   uploadPreset,
+      //   cloudName
+      // );
+
+      const uploadResponse = await uploadToBunny(
         file,
-        uploadPreset,
-        cloudName
+        { accessKey, storageZoneName, storetitle, pullZone },
+        {
+          maxWidth: 1200,
+          maxHeight: 800,
+          quality: 0.8,
+          maxSizeKB: 500,
+        }
       );
 
       if (uploadResponse.success) {
@@ -1540,10 +1299,21 @@ async function updateMainProductImages() {
       preloader.classList.add("uploadloader");
       imgElement.parentElement.appendChild(preloader); // Add preloader in the image container
 
-      const uploadResult = await uploadToCloudinary(
+      // const uploadResult = await uploadToCloudinary(
+      //   file,
+      //   uploadPreset,
+      //   cloudName
+      // );
+
+      const uploadResult = await uploadToBunny(
         file,
-        uploadPreset,
-        cloudName
+        { accessKey, storageZoneName, storetitle, pullZone },
+        {
+          maxWidth: 1200,
+          maxHeight: 800,
+          quality: 0.8,
+          maxSizeKB: 500,
+        }
       );
 
       if (!uploadResult.success) throw new Error(uploadResult.data.error);

@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
                onclick="event.stopPropagation()">
         <span class="checkmark"></span>
     </td>
-                        <td class="orderRowNum">(${index})</td>
+                        <td class="orderRowNum">${index}</td>
                         <td>${orderId}</td>
                         <td>${customerName}</td>
                         <td class="w-300">${email}</td>
