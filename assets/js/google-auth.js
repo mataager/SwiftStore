@@ -1,16 +1,16 @@
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDss53pHibCpqo87_1bhoUHkf8Idnj-Fig",
-  authDomain: "matager-f1f00.firebaseapp.com",
-  projectId: "matager-f1f00",
-  storageBucket: "matager-f1f00.appspot.com",
-  messagingSenderId: "922824110897",
-  appId: "1:922824110897:web:b7978665d22e2d652e7610",
-};
+// // Firebase configuration
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDss53pHibCpqo87_1bhoUHkf8Idnj-Fig",
+//   authDomain: "matager-f1f00.firebaseapp.com",
+//   projectId: "matager-f1f00",
+//   storageBucket: "matager-f1f00.appspot.com",
+//   messagingSenderId: "922824110897",
+//   appId: "1:922824110897:web:b7978665d22e2d652e7610",
+// };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+// // Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+// const auth = firebase.auth();
 
 // Google Provider
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -76,18 +76,67 @@ document.getElementById("google-signin-btn").addEventListener("click", () => {
     });
 });
 
-// Sign out
-document.getElementById("signout-btn").addEventListener("click", () => {
-  auth.signOut().then(() => {
-    console.log("User signed out");
-    Swal.fire({
-      title: "Logged out!",
-      text: "You have been signed out.",
-      icon: "success",
-    }).then(() => {
-      location.reload(); // Reload the page after clicking OK
-    });
-    updateUI(null); // Hide signout button and user info
+// Sign out func
+document.getElementById("signout-btn").addEventListener("click", (event) => {
+  event.preventDefault();
+
+  // Show confirmation as toast
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You will be signed out",
+    icon: "question",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+    timer: 5000, // Auto-dismiss after 5 seconds
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      auth
+        .signOut()
+        .then(() => {
+          console.log("User signed out");
+          updateUI(null);
+
+          // Show success toast
+          Swal.fire({
+            title: "Logged out!",
+            text: "You have been signed out successfully",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          }).then(() => {
+            location.reload();
+          });
+
+          // Auto-reload after 2 seconds
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error("Sign out error:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to sign out",
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        });
+    }
   });
 });
 
@@ -287,7 +336,11 @@ async function updateUI(user) {
               let hideProgressContainer = false;
 
               // Check if we need to hide the progress container
-              if (shippingStatus === "returned" || progress === "pending") {
+              if (
+                shippingStatus === "returned" ||
+                progress === "pending" ||
+                progress === "deleted"
+              ) {
                 hideProgressContainer = true;
               } else if (!shippingStatus) {
                 // If shippingStatus is undefined, mark only "Order Preparing" as active
@@ -377,6 +430,41 @@ async function updateUI(user) {
     <div class="order-actions">
       <button onclick="printinvoice('${key}', '${uid}', '${token}')" class="btn-view">Print Invoice</button>
     </div>
+   
+    <div class="order-notes-orderhistory " style="${
+      orderData.deletedAt ? "" : "display: none;"
+    }">
+  ${
+    orderData.deletedAt
+      ? `
+    
+      <div class="note-row-orderhistory">
+        <span class="note-label">Deleted At:</span>
+        <span class="note-value">${new Date(
+          orderData.deletedAt
+        ).toLocaleString()}</span>
+      </div>
+      <div class="note-row-orderhistory">
+        <span class="note-label">Reason:</span>
+        <span class="note-value">${orderData.deletionReason}</span>
+      </div>
+      ${
+        orderData.deletionNotes
+          ? `
+        <div class="note-row-orderhistory">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="note-label">Notes:</span>
+          <span class="note-value">${orderData.deletionNotes}</span>
+        </div>
+      `
+          : ""
+      }
+    </div>
+  `
+      : ""
+  }
+
+   
   </div>
   `;
 

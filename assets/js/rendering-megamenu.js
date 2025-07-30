@@ -71,44 +71,44 @@ function renderMegaMenu() {
     </div>
     <div class="flex col-u-991 hidden ${showMen ? "" : "hidden"}" id="men-menu">
       <div class="menu-category">
-        <h4>Top</h4>
+        <h4 class="mega-menu-item">Top</h4>
         <ul>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=T-Shirt')">T-Shirts</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Polo-Shirt')">Polo-shirt</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Shirt')">Shirt</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Tank-top')">Tank-top</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Sweatshirt')">Sweatshirt</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Hoodie')">Hoodie</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jacket')">Jacket</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Pullover')">Pullover</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=T-Shirt')">T-Shirts</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Polo-Shirt')">Polo-shirt</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Shirt')">Shirt</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Tank-top')">Tank-top</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Sweatshirt')">Sweatshirt</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Hoodie')">Hoodie</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jacket')">Jacket</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Pullover')">Pullover</a></li>
         </ul>
       </div>
       <div class="menu-category">
-        <h4>Bottom</h4>
+        <h4 class="mega-menu-item">Bottom</h4>
         <ul>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Trousers')">Trousers</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jeans')">Jeans</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jogger')">Jogger</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Sweatpants')">Sweatpants</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Short')">Short</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Swimwear')">Swimwear</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Socks')">Socks</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Trousers')">Trousers</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jeans')">Jeans</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Jogger')">Jogger</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Sweatpants')">Sweatpants</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Short')">Short</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Swimwear')">Swimwear</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Socks')">Socks</a></li>
         </ul>
       </div>
       <div class="menu-category">
-        <h4>Footwear</h4>
+        <h4 class="mega-menu-item">Footwear</h4>
         <ul>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Shoes')">Shoes</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Slipper')">Slipper</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Shoes')">Shoes</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Slipper')">Slipper</a></li>
         </ul>
       </div>
       <div class="menu-category">
-        <h4>Accessories</h4>
+        <h4 class="mega-menu-item">Accessories</h4>
         <ul>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Belts')">Belts</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Caps')">Caps</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Hats')">Hats</a></li>
-          <li><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Watches')">Watches</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Belts')">Belts</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Caps')">Caps</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Hats')">Hats</a></li>
+          <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=men&piece=Watches')">Watches</a></li>
         </ul>
       </div>
     </div>
@@ -118,76 +118,76 @@ function renderMegaMenu() {
       <div class="menu-category">
     <h4>Top</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=T-Shirt')">T-Shirts</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=T-Shirt')">T-Shirts</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Polo-Shirt')">Polo-shirt</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Polo-Shirt')">Polo-shirt</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Shirt')">Shirt</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Shirt')">Shirt</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Tank-top')">Tank-top</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Tank-top')">Tank-top</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Sweatshirt')">Sweatshirt</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Sweatshirt')">Sweatshirt</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Hoodie')">Hoodie</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Hoodie')">Hoodie</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jacket')">Jacket</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jacket')">Jacket</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Pullover')">Pullover</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Pullover')">Pullover</a>
         </li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Bottom</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Trousers')">Trousers</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Trousers')">Trousers</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jeans')">Jeans</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jeans')">Jeans</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jogger')">Jogger</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Jogger')">Jogger</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Sweatpants')">Sweatpants</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Sweatpants')">Sweatpants</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Skirt')">Skirt</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Skirt')">Skirt</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Short')">Short</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Short')">Short</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Swimwear')">Swimwear</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Swimwear')">Swimwear</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Socks')">Socks</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Socks')">Socks</a>
         </li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>body suits</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Dress')">Dress</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Dress')">Dress</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Pyjama')">Pyjama</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Pyjama')">Pyjama</a>
         </li>
-         <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=lingerie')">lingerie</a>
+         <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=lingerie')">lingerie</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Borkeni')">Borkeni</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Borkeni')">Borkeni</a>
         </li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Footwear</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Shoes')">Shoes</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Shoes')">Shoes</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Heels')">Heels</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Heels')">Heels</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Slipper')">Slipper</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Slipper')">Slipper</a>
         </li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Accessories</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Belts')">Belts</a></li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Caps')">Caps</a></li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Hats')">Hats</a></li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Watches')">Watches</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Belts')">Belts</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Caps')">Caps</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Hats')">Hats</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=women&piece=Watches')">Watches</a></li>
     </ul>
 </div>
     </div>
@@ -197,60 +197,60 @@ function renderMegaMenu() {
       <div class="menu-category">
     <h4>Top</h4>
     <ul>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=T-Shirt')">T-Shirts</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=T-Shirt')">T-Shirts</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Polo-Shirt')">Polo-shirt</a>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Polo-Shirt')">Polo-shirt</a>
         </li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Shirt')">Shirt</a></li>
-        <li><a href="#">Tank-top</a></li>
-        <li><a href="#">Sweatshirt</a></li>
-        <li><a href="#">Hoodie</a></li>
-        <li><a href="#">Jacket</a></li>
-        <li><a href="#">Pullover</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Shirt')">Shirt</a></li>
+        <li class="mega-menu-item"><a href="#">Tank-top</a></li>
+        <li class="mega-menu-item"><a href="#">Sweatshirt</a></li>
+        <li class="mega-menu-item"><a href="#">Hoodie</a></li>
+        <li class="mega-menu-item"><a href="#">Jacket</a></li>
+        <li class="mega-menu-item"><a href="#">Pullover</a></li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Bottom</h4>
     <ul>
-        <li><a href="#">Trousers</a></li>
-        <li><a href="#">Jeans</a></li>
-        <li><a href="#">Jogger</a></li>
-        <li><a href="#">Sweatpants</a></li>
-        <li><a href="#">Short</a></li>
-        <li><a href="#">Swimwear</a></li>
-        <li><a href="#">Socks</a></li>
+        <li class="mega-menu-item"><a href="#">Trousers</a></li>
+        <li class="mega-menu-item"><a href="#">Jeans</a></li>
+        <li class="mega-menu-item"><a href="#">Jogger</a></li>
+        <li class="mega-menu-item"><a href="#">Sweatpants</a></li>
+        <li class="mega-menu-item"><a href="#">Short</a></li>
+        <li class="mega-menu-item"><a href="#">Swimwear</a></li>
+        <li class="mega-menu-item"><a href="#">Socks</a></li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Pajamas</h4>
     <ul>
-        <li><a href="#">Boy’s Pajamas</a></li>
-        <li><a href="#">Girl’s Pajamas</a></li>
+        <li class="mega-menu-item"><a href="#">Boy’s Pajamas</a></li>
+        <li class="mega-menu-item"><a href="#">Girl’s Pajamas</a></li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>New Born</h4>
     <ul>
-        <li><a href="#">Baby Showers</a></li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Bodysuits')">Bodysuits</a></li>
-        <li><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Rompers')">Rompers</a></li>
+        <li class="mega-menu-item"><a href="#">Baby Showers</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Bodysuits')">Bodysuits</a></li>
+        <li class="mega-menu-item"><a onclick="changeFrameSrc('./Category.html?&category=kids&piece=Rompers')">Rompers</a></li>
     </ul>
 </div>
 
 <div class="menu-category">
     <h4>Footwear</h4>
     <ul>
-        <li><a href="#">Shoes</a></li>
-        <li><a href="#">Slipper</a></li>
+        <li class="mega-menu-item"><a href="#">Shoes</a></li>
+        <li class="mega-menu-item"><a href="#">Slipper</a></li>
     </ul>
 </div>
 <div class="menu-category">
     <h4>Accessories</h4>
     <ul>
-        <li><a href="#">Belts</a></li>
-        <li><a href="#">Caps</a></li>
-        <li><a href="#">Hats</a></li>
-        <li><a href="#">Watches</a></li>
+        <li class="mega-menu-item"><a href="#">Belts</a></li>
+        <li class="mega-menu-item"><a href="#">Caps</a></li>
+        <li class="mega-menu-item"><a href="#">Hats</a></li>
+        <li class="mega-menu-item"><a href="#">Watches</a></li>
     </ul>
 </div>
     </div>
@@ -265,7 +265,7 @@ renderMegaMenu();
 const brandsData = [
   {
     name: "Nike",
-    logo: "https://cdn.worldvectorlogo.com/logos/nike-11.svg",
+    logo: "https://www.svgrepo.com/show/303173/nike-3-logo.svg",
   },
   {
     name: "Adidas",
@@ -288,6 +288,14 @@ const brandsData = [
     logo: "https://cdn.worldvectorlogo.com/logos/asics-6.svg",
   },
   {
+    name: "Dr Martens",
+    logo: "https://logowik.com/content/uploads/images/dr-martens-airwair9411.jpg",
+  },
+  {
+    name: "Timberland",
+    logo: "https://logowik.com/content/uploads/images/timberland.jpg",
+  },
+  {
     name: "Golden Goose",
     logo: "https://cdn.freelogovectors.net/wp-content/uploads/2023/03/golden-goose-logo-freelogovectors.net_.png",
   },
@@ -300,12 +308,33 @@ const brandsData = [
     logo: "https://cdn.worldvectorlogo.com/logos/onitsuka-tiger-1.svg",
   },
   {
-    name: "McQueen",
-    logo: "https://1000marche.net/wp-content/uploads/2021/09/McQ-Alexander-McQueen-Logo.png",
+    name: "Balenciaga",
+    logo: "https://brandlogos.net/wp-content/uploads/2022/01/balenciaga-brandlogo.net_.png",
   },
+  {
+    name: "McQueen",
+    logo: "https://logowik.com/content/uploads/images/alexander-mcqueen7966.logowik.com.webp",
+  },
+  {
+    name: "Birkenstock",
+    logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-1.svg",
+  },
+  {
+    name: "Lanvin",
+    logo: "https://images.seeklogo.com/logo-png/37/1/lanvin-paris-logo-png_seeklogo-379039.png",
+  },
+  {
+    name: "loropiana",
+    logo: "https://brandlogos.net/wp-content/uploads/2022/07/loro_piana-logo_brandlogos.net_vkqaw-512x512.png",
+  },
+
   {
     name: "UGG",
     logo: "https://cdn.worldvectorlogo.com/logos/ugg-australia.svg",
+  },
+  {
+    name: "Hermes",
+    logo: "https://www.svgrepo.com/show/303584/hermes-1-logo.svg",
   },
   {
     name: "Vans",
@@ -347,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const listHTML = categoryBrands
       .map(
         (brand) => `
-      <li>
+      <li class="mega-menu-item">
         <img width="20px" src="${brand.logo}" alt="${brand.name}">
         <a href="#" onclick="brand('${brand.name}')">${brand.name}</a>
       </li>

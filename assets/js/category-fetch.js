@@ -29,6 +29,11 @@ function fetchAndRenderProducts() {
         updateCategoryTitle(category, piece, type);
         filterProducts(category, piece, type); // Filter products based on the URL parameters
         totalProducts = allProducts.length;
+        document.getElementById(
+          "itemscounter"
+        ).textContent = `${totalProducts} ${
+          totalProducts === 1 ? "Item" : "Items"
+        }`;
         handleProductRendering(); // Render the filtered products
       } else {
         console.log("No products found");
@@ -41,7 +46,6 @@ function fetchAndRenderProducts() {
 
 function updateCategoryTitle(category, piece, type) {
   const categoryTitleElement = document.getElementById("category-title");
-  categoryTitleElement.classList.add("lowercase");
 
   // Initialize the base title as "Shop All"
   // let title = "shop all";
@@ -92,14 +96,36 @@ function renderProducts() {
   productList.innerHTML = ""; // Clear existing products from the list
 
   if (totalProducts === 0) {
-    // If no products found, display a message
-    const sortby = document.querySelector(".sort-by");
+    const { category, piece } = getFilterFromUrl();
+    console.log(category, piece);
+
+    // Create message container
     const noProductsMessage = document.createElement("div");
     noProductsMessage.classList.add("no-product-message-container");
-    noProductsMessage.innerHTML = `<img src="https://i.imgur.com/xonwgsq_d.webp?maxwidth=760&fidelity=grand" width=300>`;
+
+    // Create elegant message with styling
+    noProductsMessage.innerHTML = `
+        <div class="no-products-content">
+           <i class="bi bi-exclamation-diamond-fill"></i>
+            <p class="no-products-text">No ${category} ${piece} available in this store</p>
+            <p class="no-products-subtext">Please check back later or browse other categories</p>
+        </div>
+    `;
+
+    // Apply styles
+    noProductsMessage.style.cssText = `
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+        width: 100%;
+    `;
+
+    // Add to DOM
+    productList.innerHTML = ""; // Clear existing content
     productList.style.display = "block";
-    sortby.style.display = "none";
     productList.appendChild(noProductsMessage);
+
     return;
   }
 
@@ -112,44 +138,6 @@ function renderProducts() {
     const product = allData[key];
     const productCard = document.createElement("li");
     productCard.classList.add("product-item", "animate-on-scroll");
-
-    // Get colors for all sizes if sizes property exists
-    const allColors = new Set();
-    const colorValues = {};
-    if (product.sizes) {
-      Object.values(product.sizes).forEach((sizeDetails) => {
-        if (sizeDetails) {
-          // Ensure sizeDetails is not null or undefined
-          Object.keys(sizeDetails).forEach((color) => {
-            allColors.add(color);
-            colorValues[color] = sizeDetails[color]["color-value"];
-          });
-        }
-      });
-    }
-
-    // Construct color options HTML
-    let colorOptionsHTML = "";
-    const colorsArray = Array.from(allColors);
-    const displayColors = colorsArray.slice(0, 3);
-
-    displayColors.forEach((color) => {
-      const colorValue = colorValues[color] || "#000000"; // Default color if not found
-      colorOptionsHTML += `<div class="color-option2 " style="background-color: ${colorValue};" data-color-name="${color}"></div>`;
-    });
-
-    if (colorsArray.length > 3) {
-      colorOptionsHTML += `<div class="color-option2 flex center align-items font-small" onclick="productDetails('${key}')" style="background-color: #e2e2e2;" data-color-name="more">+${
-        allColors.size - 3
-      }</div>`;
-    }
-
-    // If no colors are available, show a default message or hide the color options
-    const colorOptionsContainer =
-      allColors.size > 0
-        ? `<div class="color-options m-5 mb-7 center">${colorOptionsHTML}</div>`
-        : `<p class="no-color-options mb-7">No color options available</p>`;
-
     const saleAmount = product["sale-amount"];
     const originalPrice = product["Product-Price"];
 
@@ -157,18 +145,22 @@ function renderProducts() {
 
     // Check if the product is a best seller
     const bestSellerHTML = product["bestseller"]
-      ? `<div class="best-seller" id="best-seller"><i class="bi bi-lightning-charge"></i></div>`
+      ? `<div class="best-seller" id="best-seller">Bestseller<i class="bi bi-lightning-charge"></i></div>`
       : "";
     //
 
     // Get category and sizes information
     const category = product["category"] || "Unknown category"; // Default to 'Unknown category' if not present
+    const postedat = product["posted-at"] || "Unknown date";
+    const Brand = product["Brand-Name"] || "Unknown Brand";
     const sizes = product.sizes
       ? Object.keys(product.sizes).join(",")
       : "No sizes available";
 
     // Check and set default image source if necessary
     setDefaultImageSource(product);
+    const { colorOptionsContainer, outOfStockBadge } =
+      getColorOptionsAndStockInfo(product);
     // Construct product card HTML
     productCard.innerHTML = `
         <div class="product-card" tabindex="0">
@@ -181,9 +173,12 @@ function renderProducts() {
             <img src="${
               product["product-photo2"]
             }" width="312" height="350" id="swipe2" class="image-contain" style="display: none;">
-            
-            ${saleAmount ? `<div class="card-badge">-${saleAmount}%</div>` : ""}
-            ${bestSellerHTML}
+            ${outOfStockBadge}
+            ${
+              saleAmount
+                ? `<div class="card-badge"><div id="saleAmountbadge">-${saleAmount}%</div>${bestSellerHTML}</div>`
+                : ""
+            }
             <ul class="card-action-list">
               <li class="card-action-item">
                 <button class="card-action-btn add-to-cart-btn" data-product-id="${key}" aria-labelledby="card-label-1">
@@ -210,15 +205,17 @@ function renderProducts() {
             <h3 class="h3 card-title mb-7" onclick="productDetails('${key}')">
               <a class="title" href="#">${product["product-title"]}</a>
             </h3>
-            ${
-              saleAmount
-                ? `<del id="preprice" class="m-5 mb-10 pre-sale">${originalPrice}</del>`
-                : ""
-            }
-            <p class="card-price">${salePrice} EGP</p>
+            <div class="price-animation-container">
+          ${
+            saleAmount
+              ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
+              : ""
+          }
+          <p class="card-price-animation">${salePrice} EGP</p>
+          </div>
             <a href="#" class="card-price hidden font-small">${key}</a>
           </div>
-          <div class="hidden" data-category="${category}" data-sizes="${sizes}">sorting helper</div>
+          <div class="hidden" data-brand="${Brand}" data-date="${postedat}" data-category="${category}" data-sizes="${sizes}">sorting helper</div>
         </div>`;
 
     // Append product card to the product list
@@ -229,6 +226,8 @@ function renderProducts() {
   });
 
   updatePaginationButtons();
+  setupBadgeAnimations();
+  setupPriceAnimations();
 
   // Set up event listeners for "Add to Cart" buttons
   const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");

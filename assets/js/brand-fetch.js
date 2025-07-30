@@ -30,6 +30,11 @@ function fetchAndRenderProductsByCategoryOrBrand() {
           allData = data; // Store all product data
           filterProductsByCategoryOrBrand(categoryOrBrand); // Filter products by category or brand
           totalProducts = allProducts.length;
+          document.getElementById(
+            "itemscounter"
+          ).textContent = `${totalProducts} ${
+            totalProducts === 1 ? "Item" : "Items"
+          }`;
           handleProductRendering(); // Render the filtered products
         } else {
           console.log("No products found");
@@ -66,14 +71,35 @@ function renderProducts() {
   productList.innerHTML = ""; // Clear existing products from the list
 
   if (totalProducts === 0) {
-    // If no products found, display a message
-    const sortby = document.querySelector(".sort-by");
+    const Brand = getCategoryOrBrandFromUrl(); // Get category or brand from URL
+
+    // Create message container
     const noProductsMessage = document.createElement("div");
     noProductsMessage.classList.add("no-product-message-container");
-    noProductsMessage.innerHTML = `<img src="https://i.imgur.com/xonwgsq_d.webp?maxwidth=760&fidelity=grand" width=300>`;
+
+    // Create elegant message with styling
+    noProductsMessage.innerHTML = `
+        <div class="no-products-content">
+           <i class="bi bi-exclamation-diamond-fill"></i>
+            <p class="no-products-text">No ${Brand} items available in this store</p>
+            <p class="no-products-subtext">Please check back later or browse other brands</p>
+        </div>
+    `;
+
+    // Apply styles
+    noProductsMessage.style.cssText = `
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+        width: 100%;
+    `;
+
+    // Add to DOM
+    productList.innerHTML = ""; // Clear existing content
     productList.style.display = "block";
-    sortby.style.display = "none";
     productList.appendChild(noProductsMessage);
+
     return;
   }
 
@@ -84,47 +110,52 @@ function renderProducts() {
   productKeys.forEach((key) => {
     const product = allData[key];
 
-    // Extracting color options, sale amount, and other necessary data
-    let colorOptionsHtml = ""; // Initialize color options HTML
-    let seenColors = new Set(); // Set to track seen colors
-    let extraColorsCount = 0; // Track number of extra colors
+    // // Extracting color options, sale amount, and other necessary data
+    // let colorOptionsHtml = ""; // Initialize color options HTML
+    // let seenColors = new Set(); // Set to track seen colors
+    // let extraColorsCount = 0; // Track number of extra colors
 
-    if (product["sizes"]) {
-      // Loop through each size and its colors
-      Object.keys(product["sizes"]).forEach((size) => {
-        const sizeData = product["sizes"][size];
-        // Loop through each color within the size
-        Object.keys(sizeData).forEach((color) => {
-          const colorData = sizeData[color];
-          if (!seenColors.has(colorData["color-value"])) {
-            seenColors.add(colorData["color-value"]);
-            if (seenColors.size <= 3) {
-              colorOptionsHtml += `
-                <div class="color-option2" style="background-color: ${colorData["color-value"]};" data-color-name="${color}"></div>`;
-            } else {
-              extraColorsCount++; // Increment count for extra colors
-            }
-          }
-        });
-      });
-    }
+    // if (product["sizes"]) {
+    //   // Loop through each size and its colors
+    //   Object.keys(product["sizes"]).forEach((size) => {
+    //     const sizeData = product["sizes"][size];
+    //     // Loop through each color within the size
+    //     Object.keys(sizeData).forEach((color) => {
+    //       const colorData = sizeData[color];
+    //       if (!seenColors.has(colorData["color-value"])) {
+    //         seenColors.add(colorData["color-value"]);
+    //         if (seenColors.size <= 3) {
+    //           colorOptionsHtml += `
+    //             <div class="color-option2" style="background-color: ${colorData["color-value"]};" data-color-name="${color}"></div>`;
+    //         } else {
+    //           extraColorsCount++; // Increment count for extra colors
+    //         }
+    //       }
+    //     });
+    //   });
+    // }
 
-    // If there are more than 3 colors, add the "more" button
-    if (extraColorsCount > 0) {
-      colorOptionsHtml += `
-        <div class="color-option2 flex center align-items font-small" onclick="productDetails('${key}')" style="background-color: #e2e2e2;" data-color-name="more">+${extraColorsCount}</div>`;
-    }
+    // // If there are more than 3 colors, add the "more" button
+    // if (extraColorsCount > 0) {
+    //   colorOptionsHtml += `
+    //     <div class="color-option2 flex center align-items font-small" onclick="productDetails('${key}')" style="background-color: #e2e2e2;" data-color-name="more">+${extraColorsCount}</div>`;
+    // }
+
+    const { colorOptionsContainer, outOfStockBadge } =
+      getColorOptionsAndStockInfo(product);
 
     const saleAmount = product["sale-amount"] || 0;
     const originalPrice = parseFloat(product["Product-Price"]);
     const salePrice = calculateSalePrice(originalPrice, saleAmount);
     // Check if the product is a best seller
     const bestSellerHTML = product["bestseller"]
-      ? `<div class="best-seller" id="best-seller"><i class="bi bi-lightning-charge"></i></div>`
+      ? `<div class="best-seller" id="best-seller">Bestseller<i class="bi bi-lightning-charge"></i></div>`
       : "";
     //
 
-    const category = product["category"];
+    const category = product["category"] || "Unknown category";
+    const postedat = product["posted-at"] || "Unknown date";
+    const Brand = product["Brand-Name"] || "Unknown Brand";
     const sizes = JSON.stringify(product["sizes"]);
 
     // Generate product card HTML
@@ -142,8 +173,12 @@ function renderProducts() {
           <img src="${
             product["product-photo2"]
           }" width="312" height="350" id="swipe2" class="image-contain" style="display: none;">
-          ${saleAmount ? `<div class="card-badge">-${saleAmount}%</div>` : ""}
-          ${bestSellerHTML}
+          ${outOfStockBadge}
+          ${
+            saleAmount
+              ? `<div class="card-badge"><div id="saleAmountbadge">-${saleAmount}%</div>${bestSellerHTML}</div>`
+              : ""
+          }
           <ul class="card-action-list">
             <li class="card-action-item">
               <button class="card-action-btn add-to-cart-btn" data-product-id="${key}" aria-labelledby="card-label-1">
@@ -166,25 +201,29 @@ function renderProducts() {
           </ul>
         </figure>
         <div class="card-content">
-          <div class="color-options m-5 mb-7 center">${colorOptionsHtml}</div>
+        ${colorOptionsContainer}
           <h3 class="h3 card-title mb-7" onclick="productDetails('${key}')">
             <a class="title" href="#">${product["product-title"]}</a>
           </h3>
+           <div class="price-animation-container">
           ${
             saleAmount
-              ? `<del id="preprice" class="m-5 mb-10 pre-sale">${originalPrice} EGP</del>`
+              ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
               : ""
           }
-          <p class="card-price">${salePrice} EGP</p>
+          <p class="card-price-animation">${salePrice} EGP</p>
+          </div>
           <a href="#" class="card-price hidden font-small">${key}</a>
         </div>
-        <div class="hidden" data-category="${category}" data-sizes="${sizes}">sorting helper</div>
+        <div class="hidden" data-brand="${Brand}" data-date="${postedat}" data-category="${category}" data-sizes="${sizes}">sorting helper</div>
       </div>`;
 
     productList.appendChild(productCard);
   });
 
   updatePaginationButtons();
+  setupBadgeAnimations();
+  setupPriceAnimations();
   // Set up event listeners for "Add to Cart" buttons
   const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
   addToCartButtons.forEach((button) =>

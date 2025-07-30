@@ -19,12 +19,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="./assets/js/inithializer.js"></script>
     <script src="./assets/js/static.js"></script>
     <script src="./assets/js/cart-modal.js"></script>
     <script src="./assets/js/image-error.js"></script>
     <script src="./assets/js/fetch-free.js"></script>
     <script src="./assets/js/search-product.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body id="top">
@@ -33,7 +35,12 @@
 
     </div>
     <header class="header" data-header="">
-        <div class="header__bar">Free Shipping On Orders Over <div class="m-x-3" id="free-shipping"></div> EGP</div>
+
+
+
+        <div class="header__bar" id="store-hints"></div>
+
+
         <div class="container">
 
             <div class="overlay" data-overlay=""></div>
@@ -48,11 +55,14 @@
 
             <nav class="navbar" data-navbar="">
 
-                <button class="nav-close-btn " data-nav-close-btn="" aria-label="Close Menu">
-                    <ion-icon name="close-outline" role="img" class="md hydrated" aria-label="close outline"></ion-icon>
-                </button>
+                <div class="flex flex-end">
+                    <button class="nav-close-btn " data-nav-close-btn="" aria-label="Close Menu">
+                        <ion-icon name="close-outline" role="img" class="md hydrated"
+                            aria-label="close outline"></ion-icon>
+                    </button>
+                </div>
 
-                <a href="#" class="logo ">
+                <a href="#" class="logo navbarimagearea">
                     <img src="./assets/images/iicon.svg" width="190" height="50" alt="">
                 </a>
 
@@ -60,9 +70,6 @@
 
                     <li class="navbar-item">
                         <a href="#" class="navbar-link" onclick="changeFrameSrc('index.html')">Home</a>
-                    </li>
-                    <li class="navbar-item">
-                        <a href="#" class="navbar-link" onclick="changeFrameSrc('Products.html')">Products</a>
                     </li>
 
                     <!-- /mega menus & brands menu/ -->
@@ -92,9 +99,12 @@
                     </li>
 
                     <!--  -->
+                    <li class="navbar-item">
+                        <a href="#" class="navbar-link" onclick="changeFrameSrc('Products.html')">Products</a>
+                    </li>
 
                     <li class="navbar-item">
-                        <a href="#" class="navbar-link red-txt" onclick="changeFrameSrc('sale.html')">Sale</a>
+                        <a href="#" class="navbar-link special-txt" onclick="changeFrameSrc('sale.html')">Sale</a>
                     </li>
 
                     <li class="navbar-item">
@@ -137,200 +147,69 @@
     </header>
     <div>
         <div class="preloader" id="preloader">
+            <img src="favicon.png" alt="Your Image" width="40" height="40">
             <div class="loader"></div>
         </div>
         <article id="mainpage">
 
 
 
-            <!-- <section class="section hero animate-on-scroll-auto" id="panner-img">
+
+            <section class="hero-banner-section animate-in" id="main-hero">
+                <div class="hero-overlay"></div>
                 <div class="container">
-
-                    <h2 class="h1 hero-title white-font animate-on-scroll-auto">
-                        New Summer <strong>Clothes Collection</strong>
-                    </h2>
-
-                    <p class="hero-text white-font animate-on-scroll-auto">
-                        Our commitment to quality ensures that each piece you purchase is crafted from the finest
-                        materials,
-                        offering unmatched
-                        comfort and durability.
-                    </p>
-                    <a href="./Products.html">
-                        <button class="btn-shopnow">
-                            <span>Shop Now</span>
-
-                            <ion-icon name="arrow-forward-outline" aria-hidden="true" role="img"
-                                class="md hydrated"></ion-icon>
-                        </button>
-                    </a>
-
-
-                </div>
-
-            </section> -->
-
-            <section class="hero-section animate-on-scroll-auto" id="panner-img">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 class="hero-title animate-on-scroll-auto">
-                            <span class="hero-brand">SWIFT</span>
-                            <span class="hero-subtitle">NEW 2025 COLLECTION</span>
+                    <div class="hero-content-wrapper">
+                        <h1 class="hero-title">
+                            <span class="hero-brand animate-delay-2">SWIFT</span>
+                            <span class="hero-subtitle animate-delay-3">NEW 2025 COLLECTION
+                            </span>
                         </h1>
 
-                        <h2 class="hero-main-title animate-on-scroll-auto">
-                            ELEVATE YOUR <strong>DRIP GAME</strong>
+                        <h2 class="hero-main-heading animate-delay-4">
+                            ELEVATE YOUR <span class="highlight-text">DRIP</span> GAME
                         </h2>
 
-                        <p class="hero-text animate-on-scroll-auto">
+                        <p class="hero-description animate-delay-5">
                             Premium materials. Unmatched style. Limited edition pieces crafted for those who move fast
-                            and look
-                            better.
+                            and look better.
                         </p>
 
-                        <div class="hero-cta">
-                            <a href="./Products.html" class="btn-shopnow">
-                                <span>SHOP THE COLLECTION</span>
-                                <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                        <div class="hero-actions animate-delay-5">
+                            <a href="./products.html" class="primary-cta-button">
+                                <span>VIEW COLLECTION</span>
+                                <ion-icon name="arrow-forward-outline" aria-hidden="true" role="img"
+                                    class="md hydrated"></ion-icon>
                             </a>
 
-                            <div class="hero-discount-badge">
-                                <span>EXCLUSIVE SIR-DISCOUNT ON ALL COLLECTIONS</span>
+                            <div class="secondary-cta-button pointer" onclick="changeFrameSrc('./sale.html')">
+                                <span>EXPLORE SALE ITEMS</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <style>
-                .hero-section {
-                    position: relative;
-                    height: 100vh;
-                    min-height: 800px;
-                    background:
-                        linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-                        url('https://images.unsplash.com/photo-1589304051744-9543b9f824d1?q=80&w=1578&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-                    background-size: cover;
-                    background-position: center;
-                    display: flex;
-                    align-items: center;
-                    color: white;
-                    overflow: hidden;
-                }
-
-
-                .hero-content {
-                    max-width: 800px;
-                    margin-left: 10%;
-                    position: relative;
-                    z-index: 2;
-                }
-
-                .hero-brand {
-                    display: block;
-                    font-size: 1.5rem;
-                    letter-spacing: 10px;
-                    text-transform: uppercase;
-                    margin-bottom: 1rem;
-                    color: rgba(255, 255, 255, 0.8);
-                }
-
-                .hero-subtitle {
-                    display: block;
-                    font-size: 1.2rem;
-                    letter-spacing: 5px;
-                    margin-bottom: 2rem;
-                    color: #ccc;
-                }
-
-                .hero-main-title {
-                    font-size: 4.5rem;
-                    line-height: 1.1;
-                    margin-bottom: 2rem;
-                    text-transform: uppercase;
-                    letter-spacing: 3px;
-                }
-
-                .hero-main-title strong {
-                    color: #ff4136;
-                    font-weight: 700;
-                }
-
-                .hero-text {
-                    font-size: 1.2rem;
-                    line-height: 1.6;
-                    margin-bottom: 3rem;
-                    max-width: 600px;
-                    color: whitesmoke;
-                }
-
-                .btn-shopnow {
-                    display: inline-flex;
-                    align-items: center;
-                    padding: 15px 40px;
-                    background: #ff4136;
-                    color: white;
-                    text-transform: uppercase;
-                    letter-spacing: 2px;
-                    font-weight: 700;
-                    border: none;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    text-decoration: none;
-                    font-size: 1rem;
-                }
-
-                .btn-shopnow:hover {
-                    background: #e62e24;
-                    transform: translateY(-3px);
-                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-                }
-
-                .btn-shopnow ion-icon {
-                    margin-left: 10px;
-                    font-size: 1.2rem;
-                }
-
-                .hero-discount-badge {
-                    margin-top: 20px;
-                    background: rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(10px);
-                    padding: 15px 25px;
-                    display: inline-block;
-                    border-left: 3px solid #ff4136;
-                }
-
-                .hero-discount-badge span {
-                    font-size: 0.9rem;
-                    letter-spacing: 2px;
-                }
-
-                /* Animation */
-                .animate-on-scroll-auto {
-                    opacity: 0;
-                    transform: translateY(30px);
-                    transition: all 0.6s ease-out;
-                }
-
-                .animate-on-scroll-auto.visible {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-
-                @media (max-width: 768px) {
-                    .hero-main-title {
-                        font-size: 3rem;
-                    }
-
-                    .hero-content {
-                        margin-left: 5%;
-                        padding-right: 5%;
-                    }
-                }
-            </style>
 
 
 
+
+
+
+
+            <section class="section product animate-on-scroll" id="BestSellersSection">
+                <div class="container">
+
+                    <h2 class="h2 section-title mb-40">BESTSELLERS</h2>
+
+
+
+                    <ul class="BestSellers">
+
+
+
+                    </ul>
+                </div>
+            </section>
 
             <section class="section product animate-on-scroll">
                 <div class="container">
@@ -362,6 +241,9 @@
             <section class="section special new-arri animate-on-scroll">
                 <div class="container scroll-trigger" id="new-arrival-trigger">
 
+                    <div class="special-banner center" id="new-arrival-img">
+                        <h2 id="new-arrival-title" class="h3 banner-title"></h2>
+                    </div>
 
                     <div class="special-product animate-on-scroll">
 
@@ -388,6 +270,11 @@
             <section class="section special sales-div animate-on-scroll">
                 <div class="container flex-direction-row-rev">
 
+                    <div class="special-banner center" id="sale-img">
+                        <h2 id="Sale-title" class="h3 banner-title"></h2>
+
+
+                    </div>
 
                     <div class="special-product animate-on-scroll">
 
@@ -410,6 +297,7 @@
             </section>
 
 
+
         </article>
     </div>
     <div class="modal">
@@ -427,12 +315,7 @@
 
                 <div class="footer-brand">
 
-                    <a href="#" class="logo">
-                        <img src="./assets/images/iicon.svg" width="160" height="50" alt="">
-                    </a>
-
-                    <ul class="social-list hidden">
-
+                    <ul class="social-list">
                         <li>
                             <a href="#" class="social-link">
                                 <ion-icon name="logo-facebook" role="img" class="md hydrated"
@@ -442,25 +325,18 @@
 
                         <li>
                             <a href="#" class="social-link">
-                                <ion-icon name="logo-twitter" role="img" class="md hydrated"
-                                    aria-label="logo twitter"></ion-icon>
+
+                                <ion-icon name="logo-instagram" role="img" class="md hydrated"
+                                    aria-label="logo instgram"></ion-icon>
                             </a>
                         </li>
 
                         <li>
                             <a href="#" class="social-link">
-                                <ion-icon name="logo-pinterest" role="img" class="md hydrated"
-                                    aria-label="logo pinterest"></ion-icon>
+                                <ion-icon name="logo-whatsapp" role="img" class="md hydrated"
+                                    aria-label="logo whatsapp"></ion-icon>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="#" class="social-link">
-                                <ion-icon name="logo-linkedin" role="img" class="md hydrated"
-                                    aria-label="logo linkedin"></ion-icon>
-                            </a>
-                        </li>
-
                     </ul>
 
                 </div>
@@ -504,14 +380,7 @@
                                 <span class="footer-link-text">Report a problem or a bug</span>
                             </a>
                         </li>
-
-
-
-
                     </ul>
-
-
-
                     <div class="footer-list">
 
                         <p class="footer-list-title animate-on-scroll">Newsletter</p>
@@ -556,11 +425,10 @@
 
 
     </footer>
-    <a href="#top" class="go-top-btn" data-go-top="">
-        <ion-icon name="arrow-up-outline" role="img" class="md hydrated" aria-label="arrow up outline"></ion-icon>
-    </a>
+
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="./assets/js/rendering/render.js"></script>
     <script src="./assets/js/store-contact.js"></script>
     <script src="./assets/js/store-static-img.js"></script>
     <script src="./assets/js/flip-img.js"></script>
@@ -568,11 +436,13 @@
     <script src="./assets/js/update-cart-amont.js"></script>
     <script src="./assets/js/route.js"></script>
     <script src="./assets/js/all.js"></script>
+    <script src="./assets/js/buynow.js"></script>
     <script src="./assets/js/rendering-megamenu.js"></script>
     <script src="./assets/js/rendering-collections.js"></script>
     <script src="./assets/js/rendering-search.js"></script>
     <script src="./assets/js/addfavouriteproduct.js"></script>
     <script defer src="./assets/js/animation.js"></script>
+    <script src="./assets/js/check-store-status.js"></script>
 </body>
 
 </html>

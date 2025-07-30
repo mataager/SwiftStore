@@ -25,7 +25,7 @@ function updateCartCount() {
     cartItemCount.textContent = totalQuantity;
 
     // Update the cart amount element with the total price
-    cartAmountElement.innerText = `${totalPrice.toFixed(2)} EGP`;
+    cartAmountElement.innerText = `${totalPrice} EGP`;
   } else {
     // If the cart is empty or null, set the cart count to 0 and total price to 0
     cartItemCount.textContent = "0";

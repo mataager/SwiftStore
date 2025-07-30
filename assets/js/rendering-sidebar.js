@@ -1,6 +1,8 @@
 const sidebarContent = `<div class="filter-header">
                             <h3>Filters</h3>
-                            <button type="button" id="closeBtn" class="close-btn">
+                           
+
+                            <button type="button" class="modalbtnR" id="closeBtn" aria-label="Close Modal">
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>
@@ -25,6 +27,14 @@ const sidebarContent = `<div class="filter-header">
                                 <button id="Kids-option" class="sort-option ${
                                   showKids ? "" : "hidden"
                                 }">Kids</button>
+                            </div>
+
+                            <!-- brands Section -->
+                            <h4>Brands</h4>
+                            <div class="brands-options">
+                                <button>adidas</button>
+                                <button>nike</button>
+                                <button>bullandbear</button>
                             </div>
 
                             <!-- Size Section -->

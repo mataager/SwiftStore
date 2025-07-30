@@ -82,12 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const adjustedHTML = adjustedItems
         .map(
           (item) => `
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <div style="display: flex;align-items: center;gap: 10px;margin-bottom: 10px;flex-direction: column;">
           <img 
             src="${item["photourl"]}" 
             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" 
           />
-          <span> your item has adjusted to its maximum stock amount which is : ${item.adjustedQuantity}</span>
+          <span class="popup-txt"> your item has adjusted to its maximum stock amount which is : ${item.adjustedQuantity}</span>
         </div>
       `
         )

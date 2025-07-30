@@ -1,5 +1,6 @@
 // async function addfavouriteproduct(key) {
 //   const url = `https://matager-f1f00-default-rtdb.firebaseio.com/Stores/${uid}/Products/${key}.json`;
+
 //   // Create or show preloader overlay
 //   let preloader = document.getElementById("preloader-overlay");
 //   if (!preloader) {
@@ -16,41 +17,41 @@
 //   // Start timer for minimum 1 second
 //   const minLoadTime = 1000;
 //   const startTime = Date.now();
+
 //   try {
 //     // Fetch product details
 //     const response = await fetch(url);
+//     if (!response.ok) throw new Error("Network response was not ok");
 //     const product = await response.json();
 
 //     if (!product) {
-//       alert("Product not found!");
-//       return;
+//       throw new Error("Product not found!");
 //     }
 
 //     // Calculate remaining time to ensure minimum 1 second loading
 //     const elapsedTime = Date.now() - startTime;
 //     const remainingTime = Math.max(0, minLoadTime - elapsedTime);
 
+//     // Wait for remaining time
 //     await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
-//     // Hide preloader
+//     // Select modal elements before hiding preloader
+//     // const modal = document.getElementById("modal-fav");
+//     // const modalContent = document.getElementById("modal-fav-content");
+//     const modal = document.querySelector(".modal");
+//     const modalContent = document.querySelector(".modal-content");
+
+//     // Hide preloader first
 //     preloader.classList.add("hidden");
-//     document.body.classList.remove("modal-open");
 
-//     // Select the modal and its content container
-//     const modal = document.getElementById("modal-fav");
-//     const modalContent = document.getElementById("modal-fav-content");
-
-//     // Clear any existing content in the modal
-//     modalContent.innerHTML = "";
-
-//     // Add content to the modal
+//     // Then populate and show modal
 //     modalContent.innerHTML = `
 //       <div class="modal-header">
-//         <button style="color: black;background: none;border-radius: 0px 8px 0px 8px;margin: 0;" type="button" class="Add-to-Cart" onclick="productDetails('${key}')">
+//         <button class="modalbtnL" onclick="productDetails('${key}')">
 //           <i class="bi bi-box-arrow-in-down-right"></i>
 //         </button>
-//         <button type="button" class="Add-to-Cart" style="color: black;background: none;border-radius: 0px 8px 0px 8px;margin: 0;" id="closeModal">
-//           <i class="bi bi-x-lg"></i>
+//         <button type="button" class="modalbtnR" onclick="closeModal()">
+//          <i class="bi bi-x"></i>
 //         </button>
 //       </div>
 //       <form class="m-30" id="productForm">
@@ -76,158 +77,124 @@
 //         </button>
 //       </div>
 //     `;
-//     // Show modal
-//     modal.style.display = "flex";
-//     modal.classList.add("show");
-//     document.body.style.overflow = "hidden";
 
-//     // DOM elements
+//     // Show modal after preloader is hidden
+//     setTimeout(() => {
+//       modal.style.display = "block";
+//       modal.classList.add("show");
+//       document.body.style.overflow = "hidden";
+//     }, 10); // Small delay to ensure preloader is gone
+
+//     // Rest of your modal setup code...
 //     const sizeSelect = modalContent.querySelector("#size");
 //     const colorSelect = modalContent.querySelector("#color");
 //     const productImage = modalContent.querySelector("#productImage");
 //     const addToFavBtn = modalContent.querySelector("#addToFavBtn");
-//     const preloader = addToFavBtn.querySelector(".preloader-sm");
+//     const btnPreloader = addToFavBtn.querySelector(".preloader-sm");
 //     const buttonText = addToFavBtn.querySelector(".button-text");
 
-//     // Update image based on size and color
+//     // Update image function
 //     const updateImage = () => {
 //       const selectedSize = sizeSelect.value;
 //       const selectedColor = colorSelect.value;
-
-//       if (
-//         product.sizes[selectedSize] &&
-//         product.sizes[selectedSize][selectedColor]
-//       ) {
+//       if (product.sizes[selectedSize]?.[selectedColor]?.img1) {
 //         productImage.src = product.sizes[selectedSize][selectedColor].img1;
 //       }
 //     };
 
-//     // Populate color dropdown on size change
+//     // Initialize color dropdown
 //     sizeSelect.addEventListener("change", () => {
 //       const selectedSize = sizeSelect.value;
-//       colorSelect.innerHTML = ""; // Clear previous colors
-
+//       colorSelect.innerHTML = "";
 //       if (product.sizes[selectedSize]) {
 //         Object.keys(product.sizes[selectedSize]).forEach((color) => {
-//           const colorOption = document.createElement("option");
-//           colorOption.value = color;
-//           colorOption.textContent = color;
-//           colorSelect.appendChild(colorOption);
+//           colorSelect.innerHTML += `<option value="${color}">${color}</option>`;
 //         });
+//         updateImage();
 //       }
-//       colorSelect.dispatchEvent(new Event("change"));
 //     });
 
-//     // Update image on color change
-//     colorSelect.addEventListener("change", updateImage);
-
-//     // Trigger size change to populate colors and image
+//     // Trigger initial setup
 //     sizeSelect.dispatchEvent(new Event("change"));
 
-//     // Show modal
-//     modal.style.display = "flex";
-//     modal.classList.add("show");
-//     document.body.style.overflow = "hidden";
-
-//     // Close modal functionality
-//     const closeModalButton = modalContent.querySelector("#closeModal");
-//     closeModalButton.onclick = () => {
-//       modal.style.display = "none";
-//       document.body.style.overflow = "auto";
-//     };
-
-//     // Handle outside click to close modal
 //     modal.addEventListener("click", (e) => {
 //       if (e.target === modal) {
 //         modal.style.display = "none";
-//         modal.classList.remove("flex");
 //         document.body.style.overflow = "auto";
+//         document.body.classList.remove("modal-open");
 //       }
 //     });
 
-//     // Submit favorite item
+//     // Add to favorites handler
 //     addToFavBtn.onclick = async (e) => {
 //       e.preventDefault();
-
-//       const selectedSize = sizeSelect.value;
-//       const selectedColor = colorSelect.value;
-
-//       // Get authenticated user's ID and token
 //       const user = firebase.auth().currentUser;
 
 //       if (!user) {
-//         // Show SweetAlert if user is not authenticated
 //         Swal.fire({
 //           icon: "warning",
 //           title: "Sign In Required",
-//           text: "You must sign in to add this item to favorite",
+//           text: "You must sign in to add favorites",
 //           showCancelButton: true,
 //           confirmButtonText: "Go to Account",
 //           cancelButtonText: "Cancel",
-//           reverseButtons: true,
 //         }).then((result) => {
-//           if (result.isConfirmed) {
-//             window.location.href = "./account.html"; // Redirect to the account page
-//           }
+//           if (result.isConfirmed) window.location.href = "./account.html";
 //         });
 //         return;
 //       }
 
-//       const idToken = await user.getIdToken();
-//       const userId = user.uid;
-
-//       const favoriteData = {
-//         productid: key,
-//         title: product["product-title"],
-//         size: selectedSize,
-//         color: selectedColor,
-//         photo: product.sizes[selectedSize][selectedColor].img1,
-//       };
-
-//       // Post favorite product data to Firebase Realtime Database
-//       const favUrl = `https://matager-f1f00-default-rtdb.firebaseio.com/users/${userId}/favouriteitems/${uid}.json?auth=${idToken}`;
-
 //       try {
-//         // Show preloader and disable button
-//         preloader.classList.remove("hidden");
+//         btnPreloader.classList.remove("hidden");
 //         buttonText.classList.add("hidden");
 
-//         const response = await fetch(favUrl, {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify(favoriteData),
-//         });
+//         const idToken = await user.getIdToken();
+//         const response = await fetch(
+//           `https://matager-f1f00-default-rtdb.firebaseio.com/users/${user.uid}/favouriteitems/${uid}.json?auth=${idToken}`,
+//           {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({
+//               productid: key,
+//               title: product["product-title"],
+//               size: sizeSelect.value,
+//               color: colorSelect.value,
+//               photo: productImage.src,
+//             }),
+//           }
+//         );
 
-//         if (response.ok) {
-//           // Show success SweetAlert
-//           Swal.fire({
-//             icon: "success",
-//             title: "Added to Favourites!",
-//             text: "The product has been added to your favourites.",
-//             confirmButtonText: "OK",
-//           }).then(() => {
-//             modal.style.display = "none"; // Close modal
-//             document.body.style.overflow = "auto";
-//           });
-//         } else {
-//           Swal.fire({
-//             icon: "error",
-//             title: "Failed",
-//             text: "Failed to add the product to favourites. Please try again later.",
-//           });
-//         }
+//         if (!response.ok) throw new Error("Failed to add favorite");
+
+//         Swal.fire({
+//           icon: "success",
+//           title: "Added to Favorites!",
+//           showConfirmButton: false,
+//           timer: 1500,
+//         });
+//         modal.style.display = "none";
+//         document.body.style.overflow = "auto";
+//         document.body.classList.remove("modal-open");
 //       } catch (error) {
-//         console.error("Error posting to favourites:", error);
+//         Swal.fire({
+//           icon: "error",
+//           title: "Error",
+//           text: error.message,
+//         });
 //       } finally {
-//         // Hide preloader and enable button
-//         preloader.classList.add("hidden");
+//         btnPreloader.classList.add("hidden");
 //         buttonText.classList.remove("hidden");
 //       }
 //     };
 //   } catch (error) {
-//     console.error("Error fetching product:", error);
+//     console.error("Error:", error);
+//     preloader.classList.add("hidden");
+//     document.body.classList.remove("modal-open");
+//     Swal.fire({
+//       icon: "error",
+//       title: "Error",
+//       text: error.message || "Failed to load product",
+//     });
 //   }
 // }
 
@@ -269,8 +236,6 @@ async function addfavouriteproduct(key) {
     await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
     // Select modal elements before hiding preloader
-    // const modal = document.getElementById("modal-fav");
-    // const modalContent = document.getElementById("modal-fav-content");
     const modal = document.querySelector(".modal");
     const modalContent = document.querySelector(".modal-content");
 
@@ -279,27 +244,41 @@ async function addfavouriteproduct(key) {
 
     // Then populate and show modal
     modalContent.innerHTML = `
-      <div class="modal-header">
-        <button type="button" class="Add-to-Cart mCbtn" onclick="productDetails('${key}')">
-          <i class="bi bi-box-arrow-in-down-right"></i>
-        </button>
-        <button type="button" class="Add-to-Cart mCbtn" id="closeModal">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
+      <div class="flex justify-content-space-between width-available modal-header">
+    <!-- View Product Button -->
+    <div class="flex center flex-end" onclick="productDetails('${key}')">
+      <button type="button" class="modalbtnL" id="perv4Button" aria-label="View Product Details" 
+              onmouseenter="showHeaderTooltip('View Product Details')"
+              onmouseleave="hideHeaderTooltip()">
+        <i class="bi bi-box-arrow-in-down-right"></i>
+      </button>
+    </div>
+    
+    <!-- Centered Tooltip Container -->
+    <div class="header-tooltip-container" id="headerTooltip"></div>
+    
+    <!-- Close Button -->
+    <div class="flex center flex-end" onclick="closeModal()">
+      <button type="button" class="modalbtnR" id="perv4Button" aria-label="Close Modal"
+              onmouseenter="showHeaderTooltip('Close Modal')"
+              onmouseleave="hideHeaderTooltip()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
       <form class="m-30" id="productForm">
         <div id="image-preview" class="fav-image-preview">
           <img width="200px" class="radius-5" src="" alt="Selected Product Image" id="productImage">
         </div>
-        <label class="fav-modal-label" for="size">Size:</label>
-        <select class="swal2-input black-font" id="size" name="size" required>
+        <label class="fav-modal-label" for="size">Choose Size :</label>
+        <select class="select-inbut" id="size" name="size" required>
           ${Object.keys(product.sizes)
             .map((size) => `<option value="${size}">${size}</option>`)
             .join("")}
         </select>
         <br>
-        <label class="fav-modal-label" for="color">Color:</label>
-        <select class="swal2-input black-font" id="color" name="color" required></select>
+        <label class="fav-modal-label" for="color">Choose Color :</label>
+        <select class="select-inbut" id="color" name="color" required></select>
         <br>
       </form>
       <div class="flex center align-items width-available flex-direction-column">
@@ -316,9 +295,57 @@ async function addfavouriteproduct(key) {
       modal.style.display = "block";
       modal.classList.add("show");
       document.body.style.overflow = "hidden";
-    }, 10); // Small delay to ensure preloader is gone
 
-    // Rest of your modal setup code...
+      // ====== ADDED ANIMATION LOGIC ======
+      const animateModalContent = () => {
+        const elementsToAnimate = [
+          ".modal-header",
+          "#image-preview",
+          "#size",
+          "#color",
+          "#addToFavBtn",
+        ];
+
+        // Set initial state (hidden and positioned below)
+        elementsToAnimate.forEach((selector) => {
+          const el = modalContent.querySelector(selector);
+          if (el) {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(30px)";
+            el.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+          }
+        });
+
+        // Animation sequence
+        let currentDelay = 100;
+        elementsToAnimate.forEach((selector) => {
+          setTimeout(() => {
+            const el = modalContent.querySelector(selector);
+            if (el) {
+              el.style.opacity = "1";
+              el.style.transform = "translateY(0)";
+            }
+          }, currentDelay);
+          currentDelay += 100;
+        });
+
+        // Special animation for product image
+        setTimeout(() => {
+          const productImage = modalContent.querySelector("#productImage");
+          if (productImage) {
+            productImage.style.transform = "translateY(0) scale(1)";
+            productImage.style.transition =
+              "transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease-out";
+          }
+        }, 400);
+      };
+
+      // Trigger animation after a small delay to ensure rendering
+      setTimeout(animateModalContent, 50);
+      // ====== END ANIMATION LOGIC ======
+    }, 10);
+
+    // Rest of your modal setup code remains unchanged...
     const sizeSelect = modalContent.querySelector("#size");
     const colorSelect = modalContent.querySelector("#color");
     const productImage = modalContent.querySelector("#productImage");
@@ -350,16 +377,11 @@ async function addfavouriteproduct(key) {
     // Trigger initial setup
     sizeSelect.dispatchEvent(new Event("change"));
 
-    // Close modal handlers
-    modalContent.querySelector("#closeModal").onclick = () => {
-      modal.classList.remove("show");
-      document.body.style.overflow = "auto";
-    };
-
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
         modal.style.display = "none";
         document.body.style.overflow = "auto";
+        document.body.classList.remove("modal-open");
       }
     });
 
@@ -412,6 +434,7 @@ async function addfavouriteproduct(key) {
         });
         modal.style.display = "none";
         document.body.style.overflow = "auto";
+        document.body.classList.remove("modal-open");
       } catch (error) {
         Swal.fire({
           icon: "error",
