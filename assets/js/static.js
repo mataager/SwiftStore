@@ -20,7 +20,7 @@ const specialshipping = 75;
 const vanishedstock = false;
 const outofstock = true;
 const flippedimages = true;
-const autopricehandle = true;
+const autopricehandle = false;
 const codfees = 10;
 
 // guest checkout
