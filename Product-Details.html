@@ -919,13 +919,45 @@
                     sizeTabs.appendChild(sizeRadio);
 
                     // Event listener for size selection
-                    sizeRadio.addEventListener('click', function () {
+                    // sizeRadio.addEventListener('click', function () {
+                    //     productSizeElement.innerText = size;
+                    //     colorOptions.innerHTML = ''; // Clear color options when size is selected
+
+                    //     hintElement.classList.add('hidden');
+
+                    //     const colors = sizes[size];
+                    //     for (const color in colors) {
+                    //         const colorOption = document.createElement('div');
+                    //         const colorOptionwrapper = document.createElement('div');
+                    //         colorOption.classList.add('color-option');
+                    //         colorOptionwrapper.classList.add('colorOptionwrapper');
+                    //         const qty = colors[color]["qty"];
+
+                    //         colorOption.style.backgroundColor = colors[color]["color-value"];
+                    //         colorOption.setAttribute('data-color-name', color);
+                    //         colorOption.setAttribute('onclick', 'ColorRef(this)');
+                    //         colorOption.setAttribute('color-qty', qty);
+                    //         colorOption.addEventListener('click', function () {
+                    //             var colorName = colorOption.getAttribute('data-color-name');
+                    //             showPreloader();
+                    //             updateProductImages(colorName);
+                    //             setTimeout(() => {
+                    //                 hidePreloader();
+                    //             }, 500);
+                    //         });
+
+                    //         colorOptionwrapper.appendChild(colorOption);
+                    //         colorOptions.appendChild(colorOptionwrapper);
+                    //     }
+                    // });
+                     sizeRadio.addEventListener('click', function () {
                         productSizeElement.innerText = size;
                         colorOptions.innerHTML = ''; // Clear color options when size is selected
-
                         hintElement.classList.add('hidden');
 
                         const colors = sizes[size];
+                        let firstColor = null;
+
                         for (const color in colors) {
                             const colorOption = document.createElement('div');
                             const colorOptionwrapper = document.createElement('div');
@@ -948,8 +980,26 @@
 
                             colorOptionwrapper.appendChild(colorOption);
                             colorOptions.appendChild(colorOptionwrapper);
+
+                            // Store the first color element
+                            if (!firstColor) {
+                                firstColor = colorOption;
+                            }
+                        }
+
+                        // Select the first color automatically
+                        if (firstColor) {
+                            ColorRef(firstColor);
+                            // Also trigger the image update if needed
+                            var colorName = firstColor.getAttribute('data-color-name');
+                            showPreloader();
+                            updateProductImages(colorName);
+                            setTimeout(() => {
+                                hidePreloader();
+                            }, 500);
                         }
                     });
+
                 });
 
                 checkAndToggleButton("product-Size", "product-color", "addToCartButton", "BuyNowButton");
@@ -1592,4 +1642,5 @@
 <script src="./assets/js/buynow.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 <script src="./assets/js/check-store-status.js"></script>
